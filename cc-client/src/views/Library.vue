@@ -5,8 +5,8 @@
       <v-tab>Palettes</v-tab>
     </v-tabs>
     <v-tabs-items class="pt-12" v-model="tab">
+      <!-- Colors -->
       <v-tab-item>
-        <!-- Colors -->
         <v-data-iterator
           disable-pagination
           hide-default-footer
@@ -19,35 +19,42 @@
           <template v-slot:header>
             <v-toolbar dark class="my-3">
               <v-text-field
+                dense
                 v-model="search"
                 clearable
-                flat
                 solo-inverted
                 hide-details
                 prepend-inner-icon="mdi-magnify"
                 label="Search"
-              ></v-text-field>
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                <v-spacer></v-spacer>
-                <v-select
-                  v-model="sortBy"
-                  flat
-                  solo-inverted
-                  hide-details
-                  :items="keys"
-                  prepend-inner-icon="mdi-magnify"
-                  label="Sort by"
-                ></v-select>
-                <v-spacer></v-spacer>
-                <v-btn-toggle v-model="sortDesc" mandatory>
+                class="rounded-pill me-1"
+              >
+                <v-btn small slot="append" icon>
+                  <v-icon> mdi-microphone </v-icon>
+                </v-btn>
+              </v-text-field>
+              <v-spacer></v-spacer>
+              <v-select
+                v-model="sortBy"
+                solo
+                dense
+                hide-details
+                :items="keys"
+                prepend-inner-icon="mdi-sort"
+                label="Sort by"
+                class="me-1"
+              >
+              </v-select>
+              <v-btn small fab text @click="sortDesc = !sortDesc">
+                <v-icon>mdi-sort-alphabetical-variant</v-icon>
+              </v-btn>
+              <!-- <v-btn-toggle v-model="sortDesc" mandatory>
                   <v-btn large depressed :value="false">
                     <v-icon>mdi-arrow-up</v-icon>
                   </v-btn>
                   <v-btn large depressed :value="true">
                     <v-icon>mdi-arrow-down</v-icon>
                   </v-btn>
-                </v-btn-toggle>
-              </template>
+                </v-btn-toggle> -->
             </v-toolbar>
           </template>
           <!-- Body -->
@@ -133,8 +140,8 @@
           </template>
         </v-data-iterator>
       </v-tab-item>
+      <!-- Palette -->
       <v-tab-item>
-        <!-- Palette -->
         <v-data-iterator
           disable-pagination
           hide-default-footer
@@ -147,35 +154,42 @@
           <template v-slot:header>
             <v-toolbar dark class="my-3">
               <v-text-field
+                dense
                 v-model="search"
                 clearable
-                flat
                 solo-inverted
                 hide-details
                 prepend-inner-icon="mdi-magnify"
                 label="Search"
-              ></v-text-field>
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                <v-spacer></v-spacer>
-                <v-select
-                  v-model="sortBy"
-                  flat
-                  solo-inverted
-                  hide-details
-                  :items="keys"
-                  prepend-inner-icon="mdi-magnify"
-                  label="Sort by"
-                ></v-select>
-                <v-spacer></v-spacer>
-                <v-btn-toggle v-model="sortDesc" mandatory>
+                class="rounded-pill me-1"
+              >
+                <v-btn small slot="append" icon>
+                  <v-icon> mdi-microphone </v-icon>
+                </v-btn>
+              </v-text-field>
+              <v-spacer></v-spacer>
+              <v-select
+                v-model="sortBy"
+                solo
+                dense
+                hide-details
+                :items="keys"
+                prepend-inner-icon="mdi-sort"
+                label="Sort by"
+                class="me-1"
+              >
+              </v-select>
+              <v-btn small fab text @click="sortDesc = !sortDesc">
+                <v-icon>mdi-sort-alphabetical-variant</v-icon>
+              </v-btn>
+              <!-- <v-btn-toggle v-model="sortDesc" mandatory>
                   <v-btn large depressed :value="false">
                     <v-icon>mdi-arrow-up</v-icon>
                   </v-btn>
                   <v-btn large depressed :value="true">
                     <v-icon>mdi-arrow-down</v-icon>
                   </v-btn>
-                </v-btn-toggle>
-              </template>
+                </v-btn-toggle> -->
             </v-toolbar>
           </template>
           <!-- Body -->
