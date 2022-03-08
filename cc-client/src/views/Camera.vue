@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Camera -->
     <div class="camera">
       <video class="video">Video stream not available.</video>
       <div class="controls">
@@ -22,6 +23,7 @@
         </v-btn>
       </div>
     </div>
+    <!-- Popup for color picking -->
     <v-dialog
       v-model="dialog"
       eager
@@ -138,19 +140,53 @@ export default {
       return hex;
     },
     avgcolor() {},
+    getUserMedia(constraints) {
+      // if Promise-based API is available, use it
+      if (navigator.mediaDevices) {
+        return navigator.mediaDevices.getUserMedia(constraints);
+      }
+      // otherwise try falling back to old, possibly prefixed API...
+      var legacyApi =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+      if (legacyApi) {
+        // ...and promisify it
+        return new Promise((resolve, reject) => {
+          legacyApi.bind(navigator)(constraints, resolve, reject);
+        });
+      }
+    },
   },
   mounted() {
-    video = document.querySelector('.video');
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
-      .then(function (stream) {
-        if (video) {
+    if (
+      !navigator.mediaDevices &&
+      !navigator.getUserMedia &&
+      !navigator.webkitGetUserMedia &&
+      !navigator.mozGetUserMedia &&
+      !navigator.msGetUserMedia
+    ) {
+      alert('User Media API not supported.');
+      return;
+    }
+
+    this.getUserMedia({ video: true })
+      .then((stream) => {
+        video = document.querySelector('.video');
+
+        if ('srcObject' in video) {
           video.srcObject = stream;
-          video.play();
+        } else if (navigator.mozGetUserMedia) {
+          video.mozSrcObject = stream;
+        } else {
+          video.src = (window.URL || window.webkitURL).createObjectURL(stream);
         }
+
+        video.play();
       })
       .catch(function (err) {
-        console.log('An error occurred: ' + err);
+        alert('Error: ' + err);
       });
   },
   components: {
