@@ -44,9 +44,14 @@
         <!-- Main: Color -->
         <v-card-text
           v-if="!showPalette"
-          class="edit-main edit-color text--primary rounded-t-xl text-h6"
+          class="edit-main edit-color text--primary rounded-t-xl"
         >
-          <div>Click to copy</div>
+          <div class="mb-1 mt-3 font-weight-bold text-center">
+            Click on the image to <span class="primary--text">pick</span> a
+            color.
+            <br />
+            Click on the color to copy it.
+          </div>
           <!-- Color Edit -->
           <div class="color-edit my-2">
             <v-menu top :offset-y="true" :close-on-content-click="false">
@@ -63,15 +68,21 @@
         <!-- Main: Palette -->
         <v-card-text
           v-else
-          class="edit-main edit-palette text--primary rounded-t-xl text-h6"
+          class="edit-main edit-palette text--primary rounded-t-xl"
         >
+          <div class="mb-1 mt-3 font-weight-bold text-center">
+            Generated <span class="primary--text">color scheme </span> to image.
+            <br />
+            Select individual colors to
+            <span class="primary--text">change</span> them.
+          </div>
           <!-- Palette -->
           <v-item-group mandatory>
-            <v-row no-gutters class="elevation-3 rounded-pill pa-3">
+            <v-row no-gutters class="elevation-3 rounded-pill pa-3 my-2">
               <v-col v-for="(col, i) in palette" :key="i">
                 <v-item v-slot="{ active, toggle }">
                   <v-chip
-                    class="color-field inset-shadow mx-1"
+                    class="color-field inset-shadow mx-2"
                     @click="
                       toggle();
                       pix = i;
@@ -113,7 +124,12 @@
             >
             {{ showPalette ? 'Back' : 'Palette' }}
           </v-btn>
-          <SaveDialog :image="image" :color="color" />
+          <SaveDialog
+            :isPalette="showPalette"
+            :palette="palette"
+            :image="image"
+            :color="color"
+          />
         </v-card-actions>
       </v-card>
     </v-dialog>

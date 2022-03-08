@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const path = require('path');
 const colors = require('./routes/colors');
-// const palettes = require('./routes/palettes');
+const palettes = require('./routes/palettes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 require('colors');
@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(express.json({ limit: '20mb' }));
 app.use('/colors', colors);
-// app.use('/palettes', palettes);
+app.use('/palettes', palettes);
 
 app.use(errorHandler);
 app.use(notFound);

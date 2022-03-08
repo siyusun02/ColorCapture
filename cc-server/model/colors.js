@@ -1,13 +1,4 @@
-/* eslint-disable comma-dangle */
 const { query } = require('../db/index');
-
-// const delPerson = async (id) => {
-//   const { rows } = await query(`
-//   DELETE FROM people
-//   WHERE id = $1
-//   RETURNING *;`, [id]);
-//   return rows[0];
-// };
 
 module.exports = {
   getColors: async () => {

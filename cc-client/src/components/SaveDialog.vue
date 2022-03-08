@@ -11,6 +11,7 @@
         <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
+        <div>Save {{ isPalette ? 'palette' : 'color' }} to library</div>
       </v-toolbar>
       <v-card-text>
         <v-form ref="form" lazy-validation>
@@ -61,19 +62,35 @@ export default {
   props: {
     image: String,
     color: String,
+    palette: Array,
+    isPalette: Boolean,
   },
   methods: {
     async save() {
-      console.log('save');
       if (this.$refs.form.validate()) {
-        const { data } = await axios.post(`${this.serveraddress}/colors`, {
-          image: this.image,
-          title: this.title,
-          creator: this.creator,
-          comment: this.comment,
-          color: this.color,
-        });
-        this.$router.push({ path: `/library/${data.id}` });
+        let id;
+        if (this.isPalette) {
+          id = (
+            await axios.post(`${this.serveraddress}/palettes`, {
+              image: this.image,
+              title: this.title,
+              creator: this.creator,
+              comment: this.comment,
+              palette: this.palette,
+            })
+          ).data.id;
+        } else {
+          id = (
+            await axios.post(`${this.serveraddress}/colors`, {
+              image: this.image,
+              title: this.title,
+              creator: this.creator,
+              comment: this.comment,
+              color: this.color,
+            })
+          ).data.id;
+        }
+        this.$router.push({ path: `/library/${id}` });
       }
     },
   },
