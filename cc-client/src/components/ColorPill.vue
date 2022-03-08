@@ -1,13 +1,25 @@
 <template>
   <div class="color-pill">
-    <v-chip
-      class="inset-shadow rounded-pill mx-1"
-      :class="fontColor"
-      :color="color"
-      @click="copy"
+    <v-tooltip
+      :open-on-click="true"
+      :open-on-hover="false"
+      top
+      v-model="tooltip"
     >
-      {{ colormode }}
-    </v-chip>
+      <template v-slot:activator="{ on, attrs }">
+        <v-chip
+          v-bind="attrs"
+          v-on="on"
+          class="inset-shadow rounded-pill mx-1"
+          :class="fontColor"
+          :color="color"
+          @click="copy"
+        >
+          {{ colormode }}
+        </v-chip>
+      </template>
+      <span>Copied {{ colormode }} to clipboard.</span>
+    </v-tooltip>
     <v-btn icon fab small @click="swapMode">
       <v-icon>mdi-unfold-more-horizontal</v-icon>
     </v-btn>
@@ -18,6 +30,7 @@ export default {
   data: () => ({
     modes: ['hex', 'rgb', 'hsl'],
     mode: 0,
+    tooltip: false,
   }),
   props: {
     color: String,
@@ -51,6 +64,8 @@ export default {
     },
     copy() {
       console.log('copy ' + this.colormode);
+      this.tooltip = true;
+      setTimeout(() => (this.tooltip = false), 1500);
     },
     hexToRgb(hex) {
       let r = '0x' + hex[1] + hex[2];
