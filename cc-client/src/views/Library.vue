@@ -4,7 +4,7 @@
       <v-tab>Colors</v-tab>
       <v-tab>Palettes</v-tab>
     </v-tabs>
-    <v-tabs-items class="pt-12" v-model="tab">
+    <v-tabs-items class="py-12" v-model="tab">
       <!-- Colors -->
       <v-tab-item>
         <v-data-iterator
@@ -112,16 +112,17 @@
                             icon
                             @click="
                               delDialog = true;
-                              currObj = sc;
+                              currObj = { ...sc };
                             "
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
+                          <!-- Edit -->
                           <v-btn
                             icon
                             @click="
                               editDialog = true;
-                              currObj = sc;
+                              currObj = { ...sc };
                             "
                           >
                             <!-- <v-icon>mdi-book-edit</v-icon> -->
@@ -273,16 +274,17 @@
                             icon
                             @click="
                               delDialog = true;
-                              currObj = sp;
+                              currObj = { ...sp };
                             "
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
+                          <!-- Edit -->
                           <v-btn
                             icon
                             @click="
                               editDialog = true;
-                              currObj = sp;
+                              currObj = { ...sp };
                             "
                           >
                             <!-- <v-icon>mdi-book-edit</v-icon> -->

@@ -20,17 +20,17 @@ module.exports = {
     });
     res.status(200).json({ id });
   }),
-  // delColor: asyncHandler(async (req, res) => {
-  //   const row = await colors.delColor(req.params.id);
-  //   if (row) {
-  //     const imgpath = path.join(__dirname, `../public/images/${row.imgname}`);
-  //     fs.unlinkSync(imgpath);
-  //     res.status(200).end();
-  //   } else res.status(404).send('ID not found');
-  // }),
-  // editColor: asyncHandler(async (req, res) => {
-  //   const row = await colors.editColor(req.params.id, req.body);
-  //   if (row) res.status(200).json(row);
-  //   else res.status(404).send('ID not found');
-  // }),
+  delPalette: asyncHandler(async (req, res) => {
+    const row = await palettes.delPalette(req.params.id);
+    if (row) {
+      const imgpath = path.join(__dirname, `../public/images/${row.imgname}`);
+      fs.unlinkSync(imgpath);
+      res.status(200).end();
+    } else res.status(404).send('ID not found');
+  }),
+  editPalette: asyncHandler(async (req, res) => {
+    const row = await palettes.editPalette(req.params.id, req.body);
+    if (row) res.status(200).json(row);
+    else res.status(404).send('ID not found');
+  }),
 };

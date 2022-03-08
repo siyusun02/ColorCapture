@@ -22,9 +22,9 @@ Content-Type: application/json
   "creator": "Si Yu Sun",
   "title": "Test 2"
 }
-### GET palettes
+### GET Palettes
 GET http://localhost:3000/palettes
-### POST palettes
+### POST Palette
 POST http://localhost:3000/palettes
 Content-Type: application/json
 
@@ -34,4 +34,15 @@ Content-Type: application/json
   "comment": "A blue rectangle",
   "creator": "Si Yu",
   "color": ["#99d9ea", "#ffffff", "#99d9ea", "#99d9ea", "#99d9ea"]
+}
+### DELETE Palette
+DELETE http://localhost:3000/palettes/10
+### PATCH Palette
+POST http://localhost:3000/palettes/10
+Content-Type: application/json
+
+{
+  "comment": "A red rectangle",
+  "creator": "Si Yu Sun",
+  "title": "Test 2"
 }

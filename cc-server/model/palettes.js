@@ -47,23 +47,23 @@ module.exports = {
       client.release();
     }
   },
-  // delColor: async (id) => {
-  //   const { rows } = await query(
-  //     'DELETE FROM savcolors WHERE id=$1 RETURNING *',
-  //     [id]
-  //   );
-  //   return rows[0];
-  // },
-  // editColor: async (id, newC) => {
-  //   const { rows } = await query(
-  //     `UPDATE savcolors
-  //       SET title = $2,
-  //           creator = $3,
-  //           comment = $4
-  //       WHERE id=$1
-  //       RETURNING *`,
-  //     [id, newC.title, newC.creator, newC.comment]
-  //   );
-  //   return rows[0];
-  // },
+  delPalette: async (id) => {
+    const { rows } = await query(
+      'DELETE FROM savpalettes WHERE id=$1 RETURNING *',
+      [id]
+    );
+    return rows[0];
+  },
+  editPalette: async (id, newC) => {
+    const { rows } = await query(
+      `UPDATE savpalettes
+        SET title = $2,
+            creator = $3,
+            comment = $4
+        WHERE id=$1
+        RETURNING *`,
+      [id, newC.title, newC.creator, newC.comment]
+    );
+    return rows[0];
+  },
 };

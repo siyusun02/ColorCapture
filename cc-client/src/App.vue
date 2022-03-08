@@ -5,7 +5,7 @@
       height="100"
       app
       color="white"
-      v-if="$route.name !== 'Home'"
+      v-if="$route.name !== 'Camera'"
     >
       <div class="text-h3 mt-5">{{ $route.name }}</div>
       <v-spacer></v-spacer>

@@ -308,7 +308,7 @@ export default {
 <style>
 .camera {
   background-color: black;
-  height: 90vh;
+  height: 100vh;
   width: 100%;
   overflow: hidden;
 }
@@ -369,14 +369,14 @@ export default {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   padding-bottom: 120px;
 }
 .video {
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 .photo {
