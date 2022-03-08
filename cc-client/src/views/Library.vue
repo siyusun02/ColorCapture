@@ -1,20 +1,23 @@
 <template>
   <div class="pb-16">
-    <v-tabs v-model="tab">
+    <v-tabs style="position: fixed; z-index: 5" v-model="tab">
       <v-tab>Colors</v-tab>
       <v-tab>Palettes</v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
+    <v-tabs-items class="pt-12" v-model="tab">
       <v-tab-item>
+        <!-- Colors -->
         <v-data-iterator
+          disable-pagination
+          hide-default-footer
           :items="savColors"
-          :page.sync="page"
           :search="search"
           :sort-by="sortBy.toLowerCase()"
           :sort-desc="sortDesc"
         >
+          <!-- Header -->
           <template v-slot:header>
-            <v-toolbar dark color="" class="my-3">
+            <v-toolbar dark class="my-3">
               <v-text-field
                 v-model="search"
                 clearable
@@ -47,7 +50,7 @@
               </template>
             </v-toolbar>
           </template>
-
+          <!-- Body -->
           <template v-slot:default="props">
             <v-container>
               <v-row>
@@ -55,9 +58,8 @@
                   v-for="sc in props.items"
                   :key="sc.id"
                   cols="12"
-                  sm="6"
-                  md="4"
-                  lg="3"
+                  md="6"
+                  lg="4"
                 >
                   <v-card class="mx-auto sc-card" max-width="344">
                     <v-img
@@ -67,26 +69,22 @@
                     <v-card-title>
                       {{ sc.title || 'Untitled Work' }}
                     </v-card-title>
-                    <v-card-subtitle
-                      >by {{ sc.creator || 'Unknown Creator' }}</v-card-subtitle
-                    >
+                    <v-card-subtitle>
+                      by {{ sc.creator || 'Unknown Creator' }}
+                    </v-card-subtitle>
                     <v-card-text>
-                      <v-chip
-                        class="color-pill me-3 inset-shadow"
-                        :color="sc.color"
-                      >
-                        {{ sc.color }}
-                      </v-chip>
+                      <ColorPill :color="sc.color" />
                     </v-card-text>
                     <v-card-actions icon @click="sc.show = !sc.show">
                       <v-btn rounded color="primary" text>Details</v-btn>
                       <v-spacer></v-spacer>
                       <v-btn icon>
-                        <v-icon>{{
-                          sc.show ? 'mdi-chevron-up' : 'mdi-chevron-down'
-                        }}</v-icon>
+                        <v-icon>
+                          {{ sc.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+                        </v-icon>
                       </v-btn>
                     </v-card-actions>
+                    <!-- Details -->
                     <v-expand-transition>
                       <div v-show="sc.show">
                         <v-divider></v-divider>
@@ -122,7 +120,6 @@
                             <!-- <v-icon>mdi-book-edit</v-icon> -->
                             <v-icon>mdi-pencil</v-icon>
                           </v-btn>
-
                           <v-btn icon>
                             <v-icon>mdi-share-variant</v-icon>
                           </v-btn>
@@ -138,6 +135,157 @@
       </v-tab-item>
       <v-tab-item>
         <!-- Palette -->
+        <v-data-iterator
+          disable-pagination
+          hide-default-footer
+          :items="savPalettes"
+          :search="search"
+          :sort-by="sortBy.toLowerCase()"
+          :sort-desc="sortDesc"
+        >
+          <!-- Header -->
+          <template v-slot:header>
+            <v-toolbar dark class="my-3">
+              <v-text-field
+                v-model="search"
+                clearable
+                flat
+                solo-inverted
+                hide-details
+                prepend-inner-icon="mdi-magnify"
+                label="Search"
+              ></v-text-field>
+              <template v-if="$vuetify.breakpoint.mdAndUp">
+                <v-spacer></v-spacer>
+                <v-select
+                  v-model="sortBy"
+                  flat
+                  solo-inverted
+                  hide-details
+                  :items="keys"
+                  prepend-inner-icon="mdi-magnify"
+                  label="Sort by"
+                ></v-select>
+                <v-spacer></v-spacer>
+                <v-btn-toggle v-model="sortDesc" mandatory>
+                  <v-btn large depressed :value="false">
+                    <v-icon>mdi-arrow-up</v-icon>
+                  </v-btn>
+                  <v-btn large depressed :value="true">
+                    <v-icon>mdi-arrow-down</v-icon>
+                  </v-btn>
+                </v-btn-toggle>
+              </template>
+            </v-toolbar>
+          </template>
+          <!-- Body -->
+          <template v-slot:default="props">
+            <v-container>
+              <v-row>
+                <v-col
+                  v-for="sp in props.items"
+                  :key="sp.id"
+                  cols="12"
+                  md="6"
+                  lg="4"
+                >
+                  <v-card class="mx-auto sc-card" max-width="344">
+                    <v-img
+                      :src="`${serverAddress}/images/${sp.imgname}`"
+                      height="200px"
+                    />
+                    <v-card-title>
+                      {{ sp.title || 'Untitled Work' }}
+                    </v-card-title>
+                    <v-card-subtitle>
+                      by {{ sp.creator || 'Unknown Creator' }}
+                    </v-card-subtitle>
+                    <v-card-text>
+                      <v-row
+                        no-gutters
+                        class="elevation-3 rounded-pill pa-3 my-2"
+                      >
+                        <v-col
+                          v-for="(col, i) in sp.palette"
+                          :key="i"
+                          align="center"
+                        >
+                          <v-chip
+                            class="color-field inset-shadow mx-2"
+                            :color="col"
+                          >
+                          </v-chip>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                    <v-card-actions icon @click="sp.show = !sp.show">
+                      <v-btn rounded color="primary" text>Details</v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn icon>
+                        <v-icon>
+                          {{ sp.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+                        </v-icon>
+                      </v-btn>
+                    </v-card-actions>
+                    <!-- Details -->
+                    <v-expand-transition>
+                      <div v-show="sp.show">
+                        <v-divider></v-divider>
+                        <v-card-text>
+                          <v-list>
+                            <v-list-item v-for="col in sp.palette" :key="col">
+                              <v-icon class="me-2"
+                                >mdi-clipboard-arrow-down</v-icon
+                              >
+                              <ColorPill :color="col" />
+                            </v-list-item>
+                          </v-list>
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                          <blockquote class="font-italic">
+                            {{ sp.comment }}
+                          </blockquote>
+                          <v-chip class="my-5">
+                            <v-icon left> mdi-calendar </v-icon>
+                            {{ new Date(sp.createdate).toDateString() }}
+                          </v-chip>
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <!-- Delete -->
+                          <v-btn
+                            icon
+                            @click="
+                              delDialog = true;
+                              currObj = sp;
+                            "
+                          >
+                            <v-icon>mdi-delete</v-icon>
+                          </v-btn>
+                          <v-btn
+                            icon
+                            @click="
+                              editDialog = true;
+                              currObj = sp;
+                            "
+                          >
+                            <!-- <v-icon>mdi-book-edit</v-icon> -->
+                            <v-icon>mdi-pencil</v-icon>
+                          </v-btn>
+                          <v-btn icon>
+                            <v-icon>mdi-share-variant</v-icon>
+                          </v-btn>
+                        </v-card-actions>
+                      </div>
+                    </v-expand-transition>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-container>
+          </template>
+        </v-data-iterator>
       </v-tab-item>
     </v-tabs-items>
     <!-- Delete Dialog -->
@@ -148,7 +296,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text rounded @click="delDialog = false"> cancel </v-btn>
-          <v-btn color="primary" rounded @click="delSavColor(currObj)">
+          <v-btn color="primary" rounded @click="delSaved(currObj)">
             Delete
           </v-btn>
         </v-card-actions>
@@ -187,7 +335,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="editDialog = false" rounded> Cancel </v-btn>
-          <v-btn color="primary" @click="editSavColor(currObj)" rounded>
+          <v-btn color="primary" @click="editSaved(currObj)" rounded>
             Save Changes
           </v-btn>
         </v-card-actions>
@@ -198,8 +346,13 @@
 
 <script>
 import axios from 'axios';
+import ColorPill from '../components/ColorPill.vue';
+
 export default {
   name: 'Home',
+  components: {
+    ColorPill,
+  },
   data() {
     return {
       pageTitle: 'casdf',
@@ -211,7 +364,10 @@ export default {
       sortDesc: false,
       sortBy: 'title',
       keys: ['title', 'createdate', 'creator'],
+      // colors
       savColors: [],
+      // palletes
+      savPalettes: [],
       delDialog: false,
       editDialog: false,
       currObj: {},
@@ -222,29 +378,50 @@ export default {
     };
   },
   methods: {
+    // Get
     async getSavColors() {
       const { data } = await axios.get(`${this.serverAddress}/colors`);
       this.savColors = data.map((e) => ({ ...e, show: false }));
     },
-    async delSavColor(sc) {
-      await axios.delete(`${this.serverAddress}/colors/${sc.id}`);
-      this.getSavColors();
-      this.delDialog = false;
+    async getSavPalettes() {
+      const { data } = await axios.get(`${this.serverAddress}/palettes`);
+      this.savPalettes = data.map((e) => ({ ...e, show: false }));
     },
-    async editSavColor(sc) {
-      if (this.$refs.form.validate()) {
-        await axios.patch(`${this.serverAddress}/colors/${sc.id}`, sc);
+    // Delete
+    async delSaved(sc) {
+      if (sc.color) {
+        await axios.delete(`${this.serverAddress}/colors/${sc.id}`);
         this.getSavColors();
-        this.editDialog = false;
+        this.delDialog = false;
+      } else {
+        await axios.delete(`${this.serverAddress}/palettes/${sc.id}`);
+        this.getSavPalettes();
+        this.delDialog = false;
+      }
+    },
+    // Patch
+    async editSaved(sc) {
+      if (this.$refs.form.validate()) {
+        if (sc.color) {
+          await axios.patch(`${this.serverAddress}/colors/${sc.id}`, sc);
+          this.getSavColors();
+          this.editDialog = false;
+        } else {
+          await axios.patch(`${this.serverAddress}/palettes/${sc.id}`, sc);
+          this.getSavPalettes();
+          this.editDialog = false;
+        }
       }
     },
   },
   created() {
     this.getSavColors();
+    this.getSavPalettes();
     this.$watch(
       () => this.$route.params,
       () => {
         this.getSavColors();
+        this.getSavPalettes();
       }
     );
   },

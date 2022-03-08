@@ -383,11 +383,6 @@ export default {
   width: 100%;
 }
 /* Palette */
-.color-field {
-  height: 40px !important;
-  width: 40px !important;
-  border-radius: 50% !important;
-}
 .color-field.active {
   border: 3px solid #000 !important;
 }

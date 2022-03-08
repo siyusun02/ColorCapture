@@ -131,4 +131,9 @@ export default {
   -webkit-box-shadow: inset 0px 3px 10px 0px rgba(0, 0, 0, 0.16);
   box-shadow: inset 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
 }
+.color-field {
+  height: 40px !important;
+  width: 40px !important;
+  border-radius: 50% !important;
+}
 </style>

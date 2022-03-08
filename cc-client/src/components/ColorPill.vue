@@ -9,7 +9,7 @@
       {{ colormode }}
     </v-chip>
     <v-btn icon fab small @click="swapMode">
-      <v-icon>mdi-swap-vertical</v-icon>
+      <v-icon>mdi-unfold-more-horizontal</v-icon>
     </v-btn>
   </div>
 </template>
