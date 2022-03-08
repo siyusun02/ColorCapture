@@ -57,12 +57,7 @@
               </template>
               <v-color-picker v-model="color"></v-color-picker>
             </v-menu>
-            <v-chip class="color-pill inset-shadow rounded-pill" :color="color">
-              {{ color }}
-            </v-chip>
-            <v-btn icon fab small>
-              <v-icon dark>mdi-eyedropper-variant</v-icon>
-            </v-btn>
+            <ColorPill :color="color" />
           </div>
         </v-card-text>
         <!-- Main: Palette -->
@@ -99,15 +94,7 @@
               </template>
               <v-color-picker v-model="palette[pix]"></v-color-picker>
             </v-menu>
-            <v-chip
-              class="color-pill me-3 inset-shadow rounded-pill"
-              :color="palette[pix]"
-            >
-              {{ palette[pix] }}
-            </v-chip>
-            <v-btn icon fab small>
-              <v-icon dark>mdi-eyedropper-variant</v-icon>
-            </v-btn>
+            <ColorPill :color="palette[pix]" />
           </div>
         </v-card-text>
         <v-divider></v-divider>
@@ -135,9 +122,11 @@
 
 <script>
 // import axios from 'axios';
-import SaveDialog from '../components/SaveDialog.vue';
 import ColorThief from 'colorthief';
 const colorthief = new ColorThief();
+
+import SaveDialog from '../components/SaveDialog.vue';
+import ColorPill from '../components/ColorPill.vue';
 
 let video;
 export default {
@@ -155,6 +144,10 @@ export default {
       palette: [],
       showPalette: false,
     };
+  },
+  components: {
+    SaveDialog,
+    ColorPill,
   },
   methods: {
     selectimage() {
@@ -211,7 +204,8 @@ export default {
       // ctx.fillRect(x, y, 10, 10);
       const imgd = ctx.getImageData(x, y, 1, 1);
       const data = imgd.data;
-      this.color = this.rgbtohex(data[0], data[1], data[2]);
+      console.log(data);
+      this.color = this.rgbToHex(...data);
       console.log(this.color);
     },
     setColorScheme(img) {
@@ -232,6 +226,7 @@ export default {
           .join('')
       );
     },
+
     getPalette() {
       // console.log(colorthief.getColor);
       const img = new Image();
@@ -291,9 +286,6 @@ export default {
         alert('Error: ' + err);
       });
   },
-  components: {
-    SaveDialog,
-  },
 };
 </script>
 
@@ -345,16 +337,6 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.edit-main .color-pill {
-  display: inline-flex;
-  width: 250px;
-  height: 40px !important;
-  align-items: center;
-  justify-content: center;
-  /* font-weight: bold;
-  font-size: 1.25em; */
 }
 
 .edit-footer {
