@@ -21,11 +21,6 @@ const routes = [
     name: 'App Info',
     component: () => import('../views/About.vue'),
   },
-  {
-    path: '/impressum',
-    name: 'Impressum',
-    component: () => import('../views/Impressum.vue'),
-  },
 ];
 
 const router = new VueRouter({
