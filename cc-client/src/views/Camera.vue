@@ -2,8 +2,12 @@
   <div>
     <!-- Camera -->
     <div class="camera">
-      <video class="video">Video stream not available.</video>
+      <video class="video" playsinline autoplay>
+        Video stream not available.
+      </video>
+      <!-- Camera controls -->
       <div class="controls">
+        <!-- Select photo from files -->
         <v-btn :disabled="!videoReady" class="mx-2" fab dark small>
           <v-icon dark> mdi-image-multiple </v-icon>
           <input
@@ -15,6 +19,7 @@
             @change="selectimage"
           />
         </v-btn>
+        <!-- Take Picture -->
         <v-btn
           :disabled="!videoReady"
           @click.stop="takepicture"
@@ -24,7 +29,15 @@
         >
           <v-icon dark> mdi-radiobox-marked </v-icon>
         </v-btn>
-        <v-btn :disabled="!videoReady" class="mx-2" fab dark small>
+        <!-- Turn camera -->
+        <v-btn
+          :disabled="!videoReady"
+          class="mx-2"
+          fab
+          dark
+          small
+          @click="turnCam"
+        >
           <v-icon dark> mdi-camera-switch </v-icon>
         </v-btn>
       </div>
@@ -115,16 +128,9 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <!-- Actions -->
+        <!-- Actions: toggle palette and save -->
         <v-card-actions class="ps-2 edit-footer">
-          <v-btn
-            color="secondary"
-            rounded
-            @click="
-              getPalette();
-              showPalette = !showPalette;
-            "
-          >
+          <v-btn color="secondary" rounded @click="showPalette = !showPalette">
             <v-icon class="mr-2"
               >mdi-{{ showPalette ? 'arrow-left' : 'palette' }}</v-icon
             >
@@ -150,6 +156,7 @@ import SaveDialog from '../components/SaveDialog.vue';
 import ColorPill from '../components/ColorPill.vue';
 
 let video;
+
 export default {
   name: 'Home',
   data() {
@@ -164,6 +171,7 @@ export default {
       palette: [],
       showPalette: false,
       videoReady: false,
+      facingmode: 'environment',
     };
   },
   components: {
@@ -171,6 +179,24 @@ export default {
     ColorPill,
   },
   methods: {
+    getUserMedia(constraints) {
+      // if Promise-based API is available, use it
+      if (navigator.mediaDevices) {
+        return navigator.mediaDevices.getUserMedia(constraints);
+      }
+      // otherwise try falling back to old, possibly prefixed API...
+      var legacyApi =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+      if (legacyApi) {
+        // ...and promisify it
+        return new Promise((resolve, reject) => {
+          legacyApi.bind(navigator)(constraints, resolve, reject);
+        });
+      }
+    },
     selectimage() {
       const file = this.$refs.photoInp.files[0];
       this.$refs.photoInp.value = '';
@@ -239,37 +265,33 @@ export default {
           .join('')
       );
     },
-
-    getPalette() {
-      // console.log(colorthief.getColor);
-      const img = new Image();
-      img.src = this.image;
-      img.onload = () => {
-        colorthief.getColor(img);
-      };
-      // colorthief.getPalette(this.img, 5).then((p) => console.log(p));
+    turnCam() {
+      console.log(this.facingmode);
+      this.facingmode = this.facingmode == 'user' ? 'environment' : 'user';
+      console.log(this.facingmode);
     },
-    avgcolor() {},
-    getUserMedia(constraints) {
-      // if Promise-based API is available, use it
-      if (navigator.mediaDevices) {
-        return navigator.mediaDevices.getUserMedia(constraints);
-      }
-      // otherwise try falling back to old, possibly prefixed API...
-      var legacyApi =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-      if (legacyApi) {
-        // ...and promisify it
-        return new Promise((resolve, reject) => {
-          legacyApi.bind(navigator)(constraints, resolve, reject);
+    setStream(facingmode) {
+      this.getUserMedia({ video: { facingMode: facingmode } })
+        .then((stream) => {
+          this.videoReady = true;
+          video = document.querySelector('.video');
+          if ('srcObject' in video) {
+            video.srcObject = stream;
+          } else if (navigator.mozGetUserMedia) {
+            video.mozSrcObject = stream;
+          } else {
+            video.src = (window.URL || window.webkitURL).createObjectURL(
+              stream
+            );
+          }
+          video.play();
+        })
+        .catch(function (err) {
+          console.log(err);
         });
-      }
     },
   },
-  mounted() {
+  async mounted() {
     if (
       !navigator.mediaDevices &&
       !navigator.getUserMedia &&
@@ -280,26 +302,24 @@ export default {
       alert('User Media API not supported.');
       return;
     }
-
-    this.getUserMedia({ video: true })
-      .then((stream) => {
-        this.videoReady = true;
-        video = document.querySelector('.video');
-        console.log('BLaaaa');
-
-        if ('srcObject' in video) {
-          video.srcObject = stream;
-        } else if (navigator.mozGetUserMedia) {
-          video.mozSrcObject = stream;
-        } else {
-          video.src = (window.URL || window.webkitURL).createObjectURL(stream);
-        }
-
-        video.play();
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    this.setStream(this.facingmode);
+    // this.getUserMedia({ video: true })
+    //   .then((stream) => {
+    //     this.videoReady = true;
+    //     video = document.querySelector('.video');
+    //     console.log(video);
+    //     if ('srcObject' in video) {
+    //       video.srcObject = stream;
+    //     } else if (navigator.mozGetUserMedia) {
+    //       video.mozSrcObject = stream;
+    //     } else {
+    //       video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+    //     }
+    //     video.play();
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //   });
   },
 };
 </script>
