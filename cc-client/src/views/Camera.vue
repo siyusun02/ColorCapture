@@ -96,16 +96,13 @@
             <span class="primary--text">change</span> them.
           </div>
           <!-- Palette -->
-          <v-item-group mandatory>
+          <v-item-group mandatory v-model="pix">
             <v-row no-gutters class="elevation-3 rounded-pill pa-3 my-2">
               <v-col v-for="(col, i) in palette" :key="i">
                 <v-item v-slot="{ active, toggle }">
                   <v-chip
                     class="color-field inset-shadow mx-2"
-                    @click="
-                      toggle();
-                      pix = i;
-                    "
+                    @click="toggle"
                     :class="{ active: active }"
                     :color="col"
                   >
@@ -241,13 +238,13 @@ export default {
     pickcolor(ev) {
       const x = (ev.offsetX * this.canvas.width) / this.canvas.clientWidth;
       const y = (ev.offsetY * this.canvas.height) / this.canvas.clientHeight;
-      console.log(x, y);
       const ctx = this.canvas.getContext('2d');
       const imgd = ctx.getImageData(x, y, 1, 1);
-      const data = imgd.data;
-      console.log(data);
-      this.color = this.rgbToHex(...data);
-      console.log(this.color);
+      const color = this.rgbToHex(...imgd.data);
+      // if (this.showPalette) this.palette[this.pix] = color;
+      if (this.showPalette) this.$set(this.palette, this.pix, color);
+      else this.color = color;
+      console.log(this.palette);
     },
     setColorScheme(img) {
       this.color = this.rgbToHex(...colorthief.getColor(img));
