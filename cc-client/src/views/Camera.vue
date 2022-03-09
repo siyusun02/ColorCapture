@@ -285,6 +285,7 @@ export default {
       .then((stream) => {
         this.videoReady = true;
         video = document.querySelector('.video');
+        console.log('BLaaaa');
 
         if ('srcObject' in video) {
           video.srcObject = stream;

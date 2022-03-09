@@ -10,11 +10,9 @@ module.exports = {
       swSrc: 'public/service-worker.js',
     },
     manifestOptions: {
-      outputDir: path.resolve(__dirname, './dist'),
       name: 'Color Capture',
       theme_color: '#FD836E',
       background_color: '#4C3F44',
-      display: 'standalone',
       icons: [
         {
           src: './img/icons/android-chrome-192x192.png',

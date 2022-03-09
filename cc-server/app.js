@@ -12,10 +12,9 @@ require('dotenv').config();
 const app = express();
 
 app.use(morgan('dev'));
-app.use(helmet());
-app.use(require('cors')());
 
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(helmet());
 
 app.use(express.json({ limit: '20mb' }));
 app.use('/colors', colors);
