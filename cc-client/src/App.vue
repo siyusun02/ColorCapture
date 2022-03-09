@@ -48,8 +48,10 @@ export default {
     value: 'recent',
   }),
   methods: {
-    updateAvailable() {
+    updateAvailable(registration) {
       alert('Update is available, please refresh...');
+      console.log(registration);
+      registration.update();
     },
   },
   created() {

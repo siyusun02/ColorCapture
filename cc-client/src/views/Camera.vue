@@ -31,7 +31,7 @@
         </v-btn>
         <!-- Turn camera -->
         <v-btn
-          :disabled="!videoReady"
+          :disabled="!videoReady || isTurning"
           class="mx-2"
           fab
           dark
@@ -171,7 +171,9 @@ export default {
       palette: [],
       showPalette: false,
       videoReady: false,
-      facingmode: 'environment',
+      facingmode: 'user',
+      stream: undefined,
+      isTurning: false,
     };
   },
   components: {
@@ -266,13 +268,16 @@ export default {
       );
     },
     turnCam() {
-      console.log(this.facingmode);
+      this.isTurning = true;
       this.facingmode = this.facingmode == 'user' ? 'environment' : 'user';
-      console.log(this.facingmode);
+      const tracks = this.stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      this.setStream(this.facingmode);
     },
     setStream(facingmode) {
       this.getUserMedia({ video: { facingMode: facingmode } })
         .then((stream) => {
+          this.stream = stream;
           this.videoReady = true;
           video = document.querySelector('.video');
           if ('srcObject' in video) {
@@ -285,6 +290,7 @@ export default {
             );
           }
           video.play();
+          this.isTurning = false;
         })
         .catch(function (err) {
           console.log(err);
@@ -303,23 +309,6 @@ export default {
       return;
     }
     this.setStream(this.facingmode);
-    // this.getUserMedia({ video: true })
-    //   .then((stream) => {
-    //     this.videoReady = true;
-    //     video = document.querySelector('.video');
-    //     console.log(video);
-    //     if ('srcObject' in video) {
-    //       video.srcObject = stream;
-    //     } else if (navigator.mozGetUserMedia) {
-    //       video.mozSrcObject = stream;
-    //     } else {
-    //       video.src = (window.URL || window.webkitURL).createObjectURL(stream);
-    //     }
-    //     video.play();
-    //   })
-    //   .catch(function (err) {
-    //     console.log(err);
-    //   });
   },
 };
 </script>
