@@ -371,11 +371,9 @@ export default {
   },
   data() {
     return {
-      pageTitle: 'casdf',
-      serverAddress: 'http://localhost:3000',
+      serverAddress: process.env.VUE_APP_SERVER,
       tab: null,
       search: '',
-      page: 1,
       filter: {},
       sortDesc: false,
       sortBy: 'title',

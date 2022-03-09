@@ -1,6 +1,8 @@
 const path = require('path');
 
 module.exports = {
+  outputDir: path.resolve(__dirname, '../cc-server/public'),
+  // productionSourceMap: false,
   transpileDependencies: ['vuetify'],
   pwa: {
     workboxPluginMode: 'InjectManifest',
@@ -10,8 +12,8 @@ module.exports = {
     manifestOptions: {
       outputDir: path.resolve(__dirname, './dist'),
       name: 'Color Capture',
-      theme_color: '#ff557a',
-      background_color: '#29abe2',
+      theme_color: '#FD836E',
+      background_color: '#4C3F44',
       display: 'standalone',
       icons: [
         {
@@ -88,5 +90,11 @@ module.exports = {
         },
       ],
     },
+  },
+  chainWebpack: (config) => {
+    config.plugin('html').tap((args) => {
+      args[0].title = 'Color Capture';
+      return args;
+    });
   },
 };

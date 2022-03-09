@@ -4,7 +4,7 @@
     <div class="camera">
       <video class="video">Video stream not available.</video>
       <div class="controls">
-        <v-btn class="mx-2" fab dark small>
+        <v-btn :disabled="!videoReady" class="mx-2" fab dark small>
           <v-icon dark> mdi-image-multiple </v-icon>
           <input
             class="v-btn--fab v-btn--round v-size--small"
@@ -15,10 +15,16 @@
             @change="selectimage"
           />
         </v-btn>
-        <v-btn @click.stop="takepicture" class="mx-2" fab dark>
+        <v-btn
+          :disabled="!videoReady"
+          @click.stop="takepicture"
+          class="mx-2"
+          fab
+          dark
+        >
           <v-icon dark> mdi-radiobox-marked </v-icon>
         </v-btn>
-        <v-btn class="mx-2" fab dark small>
+        <v-btn :disabled="!videoReady" class="mx-2" fab dark small>
           <v-icon dark> mdi-camera-switch </v-icon>
         </v-btn>
       </div>
@@ -137,7 +143,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import ColorThief from 'colorthief';
 const colorthief = new ColorThief();
 
@@ -149,7 +154,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      serverAdress: 'http://localhost:3000',
       canvas: undefined,
       dialog: false,
       image: '',
@@ -159,6 +163,7 @@ export default {
       pix: 0,
       palette: [],
       showPalette: false,
+      videoReady: false,
     };
   },
   components: {
@@ -203,12 +208,6 @@ export default {
         const x = new Image();
         x.src = this.image;
         x.onload = () => this.setColorScheme(x);
-        // x.onload = () => {
-        //   this.color = this.rgbToHex(...colorthief.getColor(x));
-        //   const p = colorthief.getPalette(x);
-        //   this.palette = p.map((el) => this.rgbToHex(...el));
-        //   console.log(this.palette);
-        // };
       }
     },
     pickcolor(ev) {
@@ -216,8 +215,6 @@ export default {
       const y = (ev.offsetY * this.canvas.height) / this.canvas.clientHeight;
       console.log(x, y);
       const ctx = this.canvas.getContext('2d');
-      // ctx.fillStyle = 'red';
-      // ctx.fillRect(x, y, 10, 10);
       const imgd = ctx.getImageData(x, y, 1, 1);
       const data = imgd.data;
       console.log(data);
@@ -286,6 +283,7 @@ export default {
 
     this.getUserMedia({ video: true })
       .then((stream) => {
+        this.videoReady = true;
         video = document.querySelector('.video');
 
         if ('srcObject' in video) {
@@ -299,7 +297,7 @@ export default {
         video.play();
       })
       .catch(function (err) {
-        alert('Error: ' + err);
+        console.log(err);
       });
   },
 };

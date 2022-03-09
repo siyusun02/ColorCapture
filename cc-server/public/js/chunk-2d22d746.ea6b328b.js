@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d22d746"],{f820:function(n,o,e){"use strict";e.r(o);var c=function(){var n=this,o=n.$createElement,e=n._self._c||o;return e("v-container",[e("p",[n._v(" PWA for picking colors of a picture. "),e("br"),n._v(" Schoolproject 2021/22 by Si Yu Sun. ")])])},t=[],r={created:function(){console.log("Si Yu Sun")}},u=r,i=e("2877"),a=e("6544"),l=e.n(a),p=e("a523"),s=Object(i["a"])(u,c,t,!1,null,null,null);o["default"]=s.exports;l()(s,{VContainer:p["a"]})}}]);
+//# sourceMappingURL=chunk-2d22d746.ea6b328b.js.map
