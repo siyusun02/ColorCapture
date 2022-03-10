@@ -49,7 +49,7 @@
 import axios from 'axios';
 export default {
   data: () => ({
-    serveraddress: 'http://localhost:3000',
+    serveraddress: process.env.VUE_APP_SERVER,
     dialog: false,
     title: '',
     titleRules: [
