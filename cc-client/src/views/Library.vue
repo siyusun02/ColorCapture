@@ -73,12 +73,15 @@
                       :src="`${serverAddress}/images/${sc.imgname}`"
                       height="200px"
                     />
+                    <!-- Title -->
                     <v-card-title>
                       {{ sc.title || 'Untitled Work' }}
                     </v-card-title>
+                    <!-- Creator -->
                     <v-card-subtitle>
                       by {{ sc.creator || 'Unknown Creator' }}
                     </v-card-subtitle>
+                    <!-- Color -->
                     <v-card-text>
                       <ColorPill :color="sc.color" />
                     </v-card-text>
@@ -96,15 +99,23 @@
                       <div v-show="sc.show">
                         <v-divider></v-divider>
                         <v-card-text>
+                          <!-- Comment -->
                           <blockquote class="font-italic">
                             {{ sc.comment }}
                           </blockquote>
-                          <v-chip class="my-5">
+                          <!-- Date -->
+                          <v-chip class="my-5 me-2">
                             <v-icon left> mdi-calendar </v-icon>
                             {{ new Date(sc.createdate).toDateString() }}
                           </v-chip>
+                          <!-- Location -->
+                          <v-chip @click="openMap(sc.location)">
+                            <v-icon left> mdi-map-marker </v-icon>
+                            {{ sc.location || '--,--' }}
+                          </v-chip>
                         </v-card-text>
                         <v-divider></v-divider>
+                        <!-- Actions -->
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <!-- Delete -->
@@ -378,9 +389,7 @@ export default {
       sortDesc: false,
       sortBy: 'title',
       keys: ['title', 'createdate', 'creator'],
-      // colors
       savColors: [],
-      // palletes
       savPalettes: [],
       delDialog: false,
       editDialog: false,
@@ -426,6 +435,24 @@ export default {
           this.editDialog = false;
         }
       }
+    },
+    // Map
+    openMap(location) {
+      if (!location) return;
+      const coords = location.split(',');
+      let platform =
+        navigator?.userAgentData?.platform || navigator?.platform || 'unknown';
+      if (
+        /* if we're on iOS, open in Apple Maps */
+        platform == 'iPhone' ||
+        platform == 'iPad' ||
+        platform == 'iPod'
+      )
+        window.open(`maps://maps.google.com/maps/?q=${coords[0]},${coords[1]}`);
+      /* else use Google */ else
+        window.open(
+          `https://maps.google.com/maps/?q=${coords[0]},${coords[1]}`
+        );
     },
   },
   created() {

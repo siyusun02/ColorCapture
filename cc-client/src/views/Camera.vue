@@ -8,7 +8,8 @@
       <!-- Camera controls -->
       <div class="controls">
         <!-- Select photo from files -->
-        <v-btn :disabled="!videoReady" class="mx-2" fab dark small>
+        <!-- <v-btn :disabled="!videoReady" class="mx-2" fab dark small> -->
+        <v-btn class="mx-2" fab dark small>
           <v-icon dark> mdi-image-multiple </v-icon>
           <input
             class="v-btn--fab v-btn--round v-size--small"

@@ -67,6 +67,15 @@ export default {
   },
   methods: {
     async save() {
+      let location = '';
+      if ('geolocation' in navigator) {
+        const { coords } = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+          });
+        });
+        location = `${coords.latitude},${coords.longitude}`;
+      } else console.log('Error, Geolocation');
       if (this.$refs.form.validate()) {
         let id;
         if (this.isPalette) {
@@ -77,6 +86,7 @@ export default {
               creator: this.creator,
               comment: this.comment,
               palette: this.palette,
+              location,
             })
           ).data.id;
         } else {
@@ -87,12 +97,17 @@ export default {
               creator: this.creator,
               comment: this.comment,
               color: this.color,
+              location,
             })
           ).data.id;
         }
         this.$router.push({ path: `/library/${id}` });
       }
     },
+  },
+  created() {
+    // aks for permission...
+    navigator.geolocation.getCurrentPosition(function () {});
   },
 };
 </script>

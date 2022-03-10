@@ -9,6 +9,7 @@ module.exports = {
         s.createdate,
         s.comment,
         s.imgname,
+        s.location,
         json_agg(color) as palette
     FROM savpalettes s
     JOIN colors c on s.id = c.palette
@@ -16,15 +17,22 @@ module.exports = {
     `);
     return rows;
   },
-  addPalette: async ({ title, creator, comment, imgname, palette }) => {
+  addPalette: async ({
+    title,
+    creator,
+    comment,
+    imgname,
+    location,
+    palette,
+  }) => {
     const client = await getClient();
     try {
       await client.query('BEGIN');
       const { rows } = await client.query(
-        `INSERT INTO savpalettes (id, title, creator, createdate, comment, imgname)
-        VALUES (default, $1, $2, CURRENT_TIMESTAMP, $3, $4)
+        `INSERT INTO savpalettes (id, title, creator, createdate, comment, imgname, location)
+        VALUES (default, $1, $2, CURRENT_TIMESTAMP, $3, $4, $5)
         RETURNING id;`,
-        [title, creator, comment, imgname]
+        [title, creator, comment, imgname, location]
       );
       const { id } = rows[0];
       const res = [];
