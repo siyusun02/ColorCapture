@@ -62,8 +62,8 @@ export default {
       this.mode++;
       if (this.mode >= this.modes.length) this.mode = 0;
     },
-    copy() {
-      console.log('copy ' + this.colormode);
+    async copy() {
+      await navigator.clipboard.writeText(this.colormode);
       this.tooltip = true;
       setTimeout(() => (this.tooltip = false), 1500);
     },
