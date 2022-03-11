@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-  outputDir: path.resolve(__dirname, '../cc-server/public'),
-  // productionSourceMap: false,
+  outputDir: path.resolve(__dirname, '../cc-server/client'),
+  productionSourceMap: false,
   transpileDependencies: ['vuetify'],
   pwa: {
     workboxPluginMode: 'InjectManifest',
@@ -11,6 +11,7 @@ module.exports = {
     },
     manifestOptions: {
       name: 'Color Capture',
+      short_name: 'ColorCapture',
       theme_color: '#FD836E',
       background_color: '#4C3F44',
       icons: [
