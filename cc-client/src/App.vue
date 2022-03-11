@@ -91,10 +91,12 @@ export default {
     // Create
     async addColor(nc) {
       await axios.post(`${this.serverAddress}/colors`, nc);
+      this.getSavColors();
       this.$router.push({ path: `/library` });
     },
     async addPalette(np) {
       await axios.post(`${this.serverAddress}/palettes`, np);
+      this.getSavPalettes();
       this.$router.push({ path: `/library` });
     },
     // Read
@@ -120,19 +122,34 @@ export default {
       }
     },
     async getSavPalettes() {
-      const { data } = await axios.get(`${this.serverAddress}/palettes`);
-      this.savPalettes = data.map((e) => ({ ...e, show: false }));
+      // offline: get from store
+      if (this.offline) {
+        const savPalettes = await this.db.getAll('palettes');
+        this.savPalettes = savPalettes.filter((el) => !el.isDeleted);
+      }
+      // online: get from server
+      else {
+        const { data } = await axios.get(`${this.serverAddress}/palettes`);
+        this.savPalettes = data.map((e) => ({
+          ...e,
+          show: false, // for collapse
+          isDeleted: false, // for offline delete
+        }));
+        // clear store and add again
+        await this.db.clear('palettes');
+        for (let sp of this.savPalettes) {
+          await this.db.put('palettes', sp);
+        }
+      }
     },
     // Update
     async editSaved(s) {
       if (s.color) {
         await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
         this.getSavColors();
-        // this.editDialog = false;
       } else {
         await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
         this.getSavPalettes();
-        // this.editDialog = false;
       }
     },
     // Delete
@@ -153,7 +170,16 @@ export default {
       }
       // Palette
       else {
-        await axios.delete(`${this.serverAddress}/palettes/${s.id}`);
+        // offline: set isDeleted true in store
+        if (this.offline) {
+          let pal = this.savPalettes.find((p) => s.id === p.id);
+          pal.isDeleted = true;
+          this.db.put('palettes', pal);
+        }
+        // online: delete to server
+        else {
+          await axios.delete(`${this.serverAddress}/palettes/${s.id}`);
+        }
         this.getSavPalettes();
       }
     },
@@ -163,6 +189,7 @@ export default {
     this.db = await openDB('colorcapturedb', 1, {
       upgrade(db) {
         db.createObjectStore('colors', { keyPath: 'id' });
+        db.createObjectStore('palettes', { keyPath: 'id' });
       },
     });
     // SW update
@@ -172,6 +199,7 @@ export default {
     // online
     window.addEventListener('online', async () => {
       this.offline = false;
+      // Colors
       let colors = await this.db.getAll('colors');
       for (let col of colors) {
         if (col.isDeleted) {
@@ -180,12 +208,21 @@ export default {
         }
       }
       this.getSavColors();
+      // Palettes
+      let palettes = await this.db.getAll('palettes');
+      for (let pal of palettes) {
+        if (pal.isDeleted) {
+          await axios.delete(`${this.serverAddress}/palettes/${pal.id}`);
+          await this.db.delete('palettes', pal.id);
+        }
+      }
+      this.getSavPalettes();
     });
     // offline
     window.addEventListener('offline', () => (this.offline = true));
     // init GET
     this.getSavColors();
-    // this.getSavPalettes();
+    this.getSavPalettes();
   },
 };
 </script>
