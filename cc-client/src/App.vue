@@ -145,11 +145,32 @@ export default {
     },
     // Update
     async editSaved(s) {
+      // Colors
       if (s.color) {
-        await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
+        // offline
+        if (this.offline) {
+          let col = this.savColors.find((c) => s.id === c.id);
+          col = { ...s, isEdited: true };
+          this.db.put('colors', col);
+        }
+        // online
+        else {
+          await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
+        }
         this.getSavColors();
-      } else {
-        await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
+      }
+      // Palettes
+      else {
+        // offline
+        if (this.offline) {
+          let pal = this.savPalettes.find((p) => s.id === p.id);
+          pal = { ...s, isEdited: true };
+          this.db.put('palettes', pal);
+        }
+        // online
+        else {
+          await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
+        }
         this.getSavPalettes();
       }
     },
@@ -206,6 +227,10 @@ export default {
         if (col.isDeleted) {
           await axios.delete(`${this.serverAddress}/colors/${col.id}`);
           await this.db.delete('colors', col.id);
+        } else if (col.isEdited) {
+          await axios.patch(`${this.serverAddress}/colors/${col.id}`, col);
+          col.isEdited = false;
+          this.db.put('colors', col);
         }
       }
       this.getSavColors();
@@ -215,6 +240,10 @@ export default {
         if (pal.isDeleted) {
           await axios.delete(`${this.serverAddress}/palettes/${pal.id}`);
           await this.db.delete('palettes', pal.id);
+        } else if (pal.isEdited) {
+          await axios.patch(`${this.serverAddress}/palettes/${pal.id}`, pal);
+          pal.isEdited = false;
+          this.db.put('palettes', pal);
         }
       }
       this.getSavPalettes();
