@@ -461,6 +461,7 @@ export default {
     this.$watch(
       () => this.$route.params,
       () => {
+        console.log('asdf');
         this.getSavColors();
         this.getSavPalettes();
       }

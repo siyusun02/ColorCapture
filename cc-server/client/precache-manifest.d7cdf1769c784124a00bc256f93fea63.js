@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/css/LICENSE"
   },
   {
-    "revision": "4e09fd231970e7b2b82b",
+    "revision": "1cc59a9c17af879e89a2",
     "url": "/css/app.b5c3fa20.css"
   },
   {
@@ -40,12 +40,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/logo.7d6fc5a4.png"
   },
   {
-    "revision": "62f52701df7773979e743a5fcf0e263c",
+    "revision": "ebf5ee6237b07cfb8bd5d8e59a787112",
     "url": "/index.html"
   },
   {
-    "revision": "4e09fd231970e7b2b82b",
-    "url": "/js/app.998d7439.js"
+    "revision": "1cc59a9c17af879e89a2",
+    "url": "/js/app.89199bf6.js"
   },
   {
     "revision": "bf68de2c5b56cb86adb6",
@@ -64,7 +64,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/robots.txt"
   },
   {
-    "revision": "e2a8d3c2fe7176f3ed5224cc06c03538",
+    "revision": "3e1d5dbc30f66669b40805cb28cfa707",
     "url": "/service-worker.js"
   }
 ]);

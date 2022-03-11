@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.bc556a244d998b725c16478bcece5220.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.d7cdf1769c784124a00bc256f93fea63.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 self.skipWaiting();
 
@@ -10,7 +10,14 @@ if (workbox) {
   // Colors
   workbox.routing.registerRoute(
     '/colors',
-    new workbox.strategies.StaleWhileRevalidate({
+    new workbox.strategies.NetworkFirst({
+      cacheName: 'colors-cache',
+    })
+  );
+  // Palettes
+  workbox.routing.registerRoute(
+    '/palettes',
+    new workbox.strategies.NetworkFirst({
       cacheName: 'colors-cache',
     })
   );
@@ -18,7 +25,7 @@ if (workbox) {
   workbox.routing.registerRoute(
     new RegExp('/images/.*.png'),
     new workbox.strategies.StaleWhileRevalidate({
-      cacheName: 'roberts-image-cache',
+      cacheName: 'images-cache',
     })
   );
 } else {

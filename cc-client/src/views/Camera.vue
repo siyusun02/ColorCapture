@@ -9,7 +9,7 @@
       <div class="controls">
         <!-- Select photo from files -->
         <!-- <v-btn :disabled="!videoReady" class="mx-2" fab dark small> -->
-        <v-btn class="mx-2" fab dark small>
+        <v-btn class="mx-2" fab dark smal :loading="loading">
           <v-icon dark> mdi-image-multiple </v-icon>
           <input
             class="v-btn--fab v-btn--round v-size--small"
@@ -23,6 +23,7 @@
         <!-- Take Picture -->
         <v-btn
           :disabled="!videoReady"
+          :loading="loading"
           @click.stop="takepicture"
           class="mx-2"
           fab
@@ -32,6 +33,7 @@
         </v-btn>
         <!-- Turn camera -->
         <v-btn
+          :loading="loading"
           :disabled="!videoReady || isTurning"
           class="mx-2"
           fab
@@ -172,6 +174,7 @@ export default {
       facingmode: 'user',
       stream: undefined,
       isTurning: false,
+      loading: false,
     };
   },
   components: {
@@ -198,6 +201,7 @@ export default {
       }
     },
     selectimage() {
+      this.loading = true;
       const file = this.$refs.photoInp.files[0];
       this.$refs.photoInp.value = '';
       if (!file) return;
@@ -209,6 +213,7 @@ export default {
       };
     },
     takepicture() {
+      this.loading = true;
       this.drawImage(video);
     },
     drawImage(img) {
@@ -224,7 +229,6 @@ export default {
         this.canvas.width = video.videoWidth;
         this.canvas.height = video.videoHeight;
       } else console.log('Error.');
-      this.dialog = true;
       const ctx = this.canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
       this.image = this.canvas.toDataURL('image/png');
@@ -235,6 +239,8 @@ export default {
         x.src = this.image;
         x.onload = () => this.setColorScheme(x);
       }
+      this.dialog = true;
+      this.loading = false;
     },
     pickcolor(ev) {
       const x = (ev.offsetX * this.canvas.width) / this.canvas.clientWidth;

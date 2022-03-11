@@ -42,17 +42,7 @@
     <v-snackbar v-model="swupdate">
       New content is available!. Click OK to refresh...
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="primary"
-          text
-          v-bind="attrs"
-          @click="
-            swupdate = false;
-            window.location.reload();
-          "
-        >
-          OK
-        </v-btn>
+        <v-btn color="primary" text v-bind="attrs" @click="update"> OK </v-btn>
       </template>
     </v-snackbar>
   </v-app>
@@ -66,7 +56,12 @@ export default {
     value: 'recent',
     swupdate: false,
   }),
-  methods: {},
+  methods: {
+    update() {
+      this.swupdate = false;
+      window.location.reload();
+    },
+  },
   created() {
     document.addEventListener('swUpdated', () => (this.swupdate = true), {
       once: true,
