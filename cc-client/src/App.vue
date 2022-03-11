@@ -17,6 +17,7 @@
     <v-main>
       <router-view />
     </v-main>
+
     <div class="nav-wrapper">
       <v-sheet class="nav ma-3 rounded-pill" elevation="4">
         <v-btn x-large plain fab active-class="nav-active" to="/about" exact>
@@ -37,6 +38,15 @@
         </v-btn>
       </v-sheet>
     </div>
+
+    <v-snackbar v-model="swupdate">
+      Update is available, please refresh...
+      <template v-slot:action="{ attrs }">
+        <v-btn color="primary" text v-bind="attrs" @click="swupdate = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -46,12 +56,13 @@ export default {
 
   data: () => ({
     value: 'recent',
+    swupdate: false,
   }),
   methods: {
-    updateAvailable(registration) {
-      alert('Update is available, please refresh...');
-      console.log(registration);
-      registration.update();
+    updateAvailable({ detail }) {
+      console.log(detail);
+      this.swupdate = true;
+      detail.update();
     },
   },
   created() {

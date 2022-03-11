@@ -14,6 +14,7 @@ const routes = [
   {
     path: '/library/:id',
     name: 'Color Library',
+    props: true,
     component: Library,
   },
   {
