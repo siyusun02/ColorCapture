@@ -12,9 +12,8 @@ const routes = [
     component: Camera,
   },
   {
-    path: '/library/:id',
+    path: '/library',
     name: 'Color Library',
-    props: true,
     component: Library,
   },
   {

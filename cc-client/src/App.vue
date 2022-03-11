@@ -24,7 +24,16 @@
         class="offline elevation-4"
         >No network connection...</v-alert
       >
-      <router-view />
+      <router-view
+        :savColors="savColors"
+        :savPalettes="savPalettes"
+        @getsc="getSavColors"
+        @getsp="getSavPalettes"
+        @delsav="delSaved"
+        @editsav="editSaved"
+        @addc="addColor"
+        @addp="addPalette"
+      />
     </v-main>
 
     <div class="nav-wrapper">
@@ -38,11 +47,12 @@
           color="primary"
           dark
           fab
+          exact
           class="main-btn my-3 mx-5"
         >
           <v-icon>mdi-camera</v-icon>
         </v-btn>
-        <v-btn x-large plain fab active-class="nav-active" to="/library/0">
+        <v-btn x-large plain fab active-class="nav-active" exact to="/library">
           <v-icon>mdi-palette</v-icon>
         </v-btn>
       </v-sheet>
@@ -58,18 +68,68 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'App',
-
   data: () => ({
+    serverAddress: process.env.VUE_APP_SERVER,
     value: 'recent',
     swupdate: false,
     offline: !navigator.onLine,
+    savColors: [],
+    savPalettes: [],
   }),
   methods: {
     update() {
       this.swupdate = false;
       window.location.reload();
+    },
+    // CRUD
+    // Create
+    async addColor(nc) {
+      await axios.post(`${this.serverAddress}/colors`, nc);
+      this.$router.push({ path: `/library` });
+    },
+    async addPalette(np) {
+      const { id } = (await axios.post(`${this.serverAddress}/palettes`, np))
+        .data;
+      this.$router.push({ path: `/library/${id}` });
+    },
+    // Read
+    async getSavColors() {
+      const { data } = await axios.get(`${this.serverAddress}/colors`);
+      this.savColors = data.map((e) => ({ ...e, show: false }));
+    },
+    async getSavPalettes() {
+      const { data } = await axios.get(`${this.serverAddress}/palettes`);
+      this.savPalettes = data.map((e) => ({ ...e, show: false }));
+    },
+    // Update
+    async editSaved(s) {
+      if (this.$refs.form.validate()) {
+        if (s.color) {
+          await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
+          this.getSavColors();
+          this.editDialog = false;
+        } else {
+          await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
+          this.getSavPalettes();
+          this.editDialog = false;
+        }
+      }
+    },
+    // Delete
+    async delSaved(s) {
+      if (s.color) {
+        await axios.delete(`${this.serverAddress}/colors/${s.id}`);
+        this.getSavColors();
+        this.delDialog = false;
+      } else {
+        await axios.delete(`${this.serverAddress}/palettes/${s.id}`);
+        this.getSavPalettes();
+        this.delDialog = false;
+      }
     },
   },
   created() {

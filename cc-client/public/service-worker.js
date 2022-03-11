@@ -5,20 +5,6 @@ if (workbox) {
   console.log(`Workbox is loaded`);
   workbox.setConfig({ debug: true });
   workbox.precaching.precacheAndRoute(self.__precacheManifest);
-  // Colors
-  workbox.routing.registerRoute(
-    '/colors',
-    new workbox.strategies.NetworkFirst({
-      cacheName: 'colors-cache',
-    })
-  );
-  // Palettes
-  workbox.routing.registerRoute(
-    '/palettes',
-    new workbox.strategies.NetworkFirst({
-      cacheName: 'colors-cache',
-    })
-  );
   // Images
   workbox.routing.registerRoute(
     new RegExp('/images/.*.png'),

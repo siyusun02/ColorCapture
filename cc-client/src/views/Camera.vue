@@ -9,7 +9,7 @@
       <div class="controls">
         <!-- Select photo from files -->
         <!-- <v-btn :disabled="!videoReady" class="mx-2" fab dark small> -->
-        <v-btn class="mx-2" fab dark smal :loading="loading">
+        <v-btn class="mx-2" fab dark small :loading="loading">
           <v-icon dark> mdi-image-multiple </v-icon>
           <input
             class="v-btn--fab v-btn--round v-size--small"
@@ -141,6 +141,7 @@
             :palette="palette"
             :image="image"
             :color="color"
+            @add="save"
           />
         </v-card-actions>
       </v-card>
@@ -258,7 +259,6 @@ export default {
       const p = colorthief.getPalette(img, 5);
       this.palette = p.map((el) => this.rgbToHex(...el));
       this.pix = 0;
-      console.log(this.palette);
     },
     rgbToHex(r, g, b) {
       return (
@@ -299,6 +299,12 @@ export default {
         .catch(function (err) {
           console.log(err);
         });
+    },
+    save(n) {
+      console.log(n);
+      console.log(this.showPalette);
+      if (this.showPalette) this.$emit('addp', n);
+      else this.$emit('addc', n);
     },
   },
   async mounted() {

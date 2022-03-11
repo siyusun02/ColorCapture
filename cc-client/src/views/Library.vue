@@ -2,7 +2,7 @@
   <div class="pb-16">
     <v-tabs
       style="position: fixed; z-index: 5"
-      class="px-5 white"
+      class="px-4 white"
       v-model="tab"
     >
       <v-tab>Colors</v-tab>
@@ -12,6 +12,7 @@
       <!-- Colors -->
       <v-tab-item>
         <v-data-iterator
+          class="px-4"
           disable-pagination
           hide-default-footer
           :items="savColors"
@@ -22,7 +23,7 @@
           <!-- Header -->
           <template v-slot:header>
             <v-toolbar
-              class="mt-7 mx-4 elevation-0"
+              class="mt-7 elevation-0"
               style="border-top: 1px solid #ddd"
             >
               <!-- <v-text-field
@@ -380,13 +381,16 @@
 </template>
 
 <script>
-import axios from 'axios';
 import ColorPill from '../components/ColorPill.vue';
 
 export default {
   name: 'Home',
   components: {
     ColorPill,
+  },
+  props: {
+    savColors: Array,
+    savPalettes: Array,
   },
   data() {
     return {
@@ -397,8 +401,8 @@ export default {
       sortDesc: false,
       sortBy: 'title',
       keys: ['title', 'createdate', 'creator'],
-      savColors: [],
-      savPalettes: [],
+      // savColors: [],
+      // savPalettes: [],
       delDialog: false,
       editDialog: false,
       currObj: {},
@@ -411,37 +415,21 @@ export default {
   methods: {
     // Get
     async getSavColors() {
-      const { data } = await axios.get(`${this.serverAddress}/colors`);
-      this.savColors = data.map((e) => ({ ...e, show: false }));
+      this.$emit('getsc');
     },
     async getSavPalettes() {
-      const { data } = await axios.get(`${this.serverAddress}/palettes`);
-      this.savPalettes = data.map((e) => ({ ...e, show: false }));
+      this.$emit('getsp');
     },
     // Delete
-    async delSaved(sc) {
-      if (sc.color) {
-        await axios.delete(`${this.serverAddress}/colors/${sc.id}`);
-        this.getSavColors();
-        this.delDialog = false;
-      } else {
-        await axios.delete(`${this.serverAddress}/palettes/${sc.id}`);
-        this.getSavPalettes();
-        this.delDialog = false;
-      }
+    async delSaved(s) {
+      this.$emit('delsav', s);
+      this.delDialog = false;
     },
     // Patch
-    async editSaved(sc) {
+    async editSaved(s) {
       if (this.$refs.form.validate()) {
-        if (sc.color) {
-          await axios.patch(`${this.serverAddress}/colors/${sc.id}`, sc);
-          this.getSavColors();
-          this.editDialog = false;
-        } else {
-          await axios.patch(`${this.serverAddress}/palettes/${sc.id}`, sc);
-          this.getSavPalettes();
-          this.editDialog = false;
-        }
+        this.$emit('editsav', s);
+        this.editDialog = false;
       }
     },
     // Map
@@ -466,14 +454,6 @@ export default {
   created() {
     this.getSavColors();
     this.getSavPalettes();
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        console.log('asdf');
-        this.getSavColors();
-        this.getSavPalettes();
-      }
-    );
   },
 };
 </script>

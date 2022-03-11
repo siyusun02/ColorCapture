@@ -48,10 +48,8 @@
   </v-dialog>
 </template>
 <script>
-import axios from 'axios';
 export default {
   data: () => ({
-    serveraddress: process.env.VUE_APP_SERVER,
     dialog: false,
     title: '',
     titleRules: [
@@ -71,7 +69,7 @@ export default {
   methods: {
     async save() {
       if (this.$refs.form.validate()) {
-        this.loading = true;
+        // this.loading = true;
         let location = '';
         if ('geolocation' in navigator) {
           const { coords } = await new Promise((resolve, reject) => {
@@ -81,32 +79,30 @@ export default {
           });
           location = `${coords.latitude},${coords.longitude}`;
         } else console.log('Error, Geolocation');
-        let id;
+        // let id;
+        let n;
         if (this.isPalette) {
-          id = (
-            await axios.post(`${this.serveraddress}/palettes`, {
-              image: this.image,
-              title: this.title,
-              creator: this.creator,
-              comment: this.comment,
-              palette: this.palette,
-              location,
-            })
-          ).data.id;
+          n = {
+            image: this.image,
+            title: this.title,
+            creator: this.creator,
+            comment: this.comment,
+            palette: this.palette,
+            location,
+          };
         } else {
-          id = (
-            await axios.post(`${this.serveraddress}/colors`, {
-              image: this.image,
-              title: this.title,
-              creator: this.creator,
-              comment: this.comment,
-              color: this.color,
-              location,
-            })
-          ).data.id;
+          n = {
+            image: this.image,
+            title: this.title,
+            creator: this.creator,
+            comment: this.comment,
+            color: this.color,
+            location,
+          };
         }
-        this.$router.push({ path: `/library/${id}` });
-        this.loading = false;
+        this.$emit('add', n);
+        // this.$router.push({ path: `/library/${id}` });
+        // this.loading = false;
       }
     },
   },
