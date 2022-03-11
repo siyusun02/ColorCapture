@@ -27,6 +27,7 @@
       <router-view
         :savColors="savColors"
         :savPalettes="savPalettes"
+        :offline="offline"
         @getsc="getSavColors"
         @getsp="getSavPalettes"
         @delsav="delSaved"

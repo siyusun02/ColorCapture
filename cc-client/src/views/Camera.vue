@@ -139,6 +139,7 @@
           <SaveDialog
             :isPalette="showPalette"
             :palette="palette"
+            :offline="offline"
             :image="image"
             :color="color"
             @add="save"
@@ -177,6 +178,9 @@ export default {
       isTurning: false,
       loading: false,
     };
+  },
+  props: {
+    offline: Boolean,
   },
   components: {
     SaveDialog,
@@ -249,10 +253,8 @@ export default {
       const ctx = this.canvas.getContext('2d');
       const imgd = ctx.getImageData(x, y, 1, 1);
       const color = this.rgbToHex(...imgd.data);
-      // if (this.showPalette) this.palette[this.pix] = color;
       if (this.showPalette) this.$set(this.palette, this.pix, color);
       else this.color = color;
-      console.log(this.palette);
     },
     setColorScheme(img) {
       this.color = this.rgbToHex(...colorthief.getColor(img));

@@ -1,9 +1,18 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" color="primary" rounded>
-        <v-icon class="mr-2">mdi-content-save</v-icon>
-        Save
+      <v-btn
+        :disabled="offline"
+        v-bind="attrs"
+        v-on="on"
+        color="primary"
+        rounded
+      >
+        <!-- <v-icon class="mr-2">mdi-content-save </v-icon> -->
+        <v-icon class="mr-2"
+          >mdi-{{ offline ? 'cancel' : 'content-save' }}
+        </v-icon>
+        {{ offline ? 'offline save' : 'save' }}
       </v-btn>
     </template>
     <v-card>
@@ -65,6 +74,7 @@ export default {
     color: String,
     palette: Array,
     isPalette: Boolean,
+    offline: Boolean,
   },
   methods: {
     async save() {
