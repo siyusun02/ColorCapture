@@ -69,6 +69,7 @@
 
 <script>
 import axios from 'axios';
+import { openDB } from 'idb';
 
 export default {
   name: 'App',
@@ -79,11 +80,12 @@ export default {
     offline: !navigator.onLine,
     savColors: [],
     savPalettes: [],
+    db: undefined,
   }),
   methods: {
     update() {
       this.swupdate = false;
-      window.location.reload();
+      location.reload();
     },
     // CRUD
     // Create
@@ -97,8 +99,25 @@ export default {
     },
     // Read
     async getSavColors() {
-      const { data } = await axios.get(`${this.serverAddress}/colors`);
-      this.savColors = data.map((e) => ({ ...e, show: false }));
+      // offline: get from store
+      if (this.offline) {
+        const savColors = await this.db.getAll('colors');
+        this.savColors = savColors.filter((el) => !el.isDeleted);
+      }
+      // online: get from server
+      else {
+        const { data } = await axios.get(`${this.serverAddress}/colors`);
+        this.savColors = data.map((e) => ({
+          ...e,
+          show: false, // for collapse
+          isDeleted: false, // for offline delete
+        }));
+        // clear store and add again
+        await this.db.clear('colors');
+        for (let sc of this.savColors) {
+          await this.db.put('colors', sc);
+        }
+      }
     },
     async getSavPalettes() {
       const { data } = await axios.get(`${this.serverAddress}/palettes`);
@@ -109,32 +128,64 @@ export default {
       if (s.color) {
         await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
         this.getSavColors();
-        this.editDialog = false;
+        // this.editDialog = false;
       } else {
         await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
         this.getSavPalettes();
-        this.editDialog = false;
+        // this.editDialog = false;
       }
     },
     // Delete
     async delSaved(s) {
+      // Colors
       if (s.color) {
-        await axios.delete(`${this.serverAddress}/colors/${s.id}`);
+        // offline: set isDeleted true in store
+        if (this.offline) {
+          let col = this.savColors.find((c) => s.id === c.id);
+          col.isDeleted = true;
+          this.db.put('colors', col);
+        }
+        // online: delete to server
+        else {
+          await axios.delete(`${this.serverAddress}/colors/${s.id}`);
+        }
         this.getSavColors();
-        this.delDialog = false;
-      } else {
+      }
+      // Palette
+      else {
         await axios.delete(`${this.serverAddress}/palettes/${s.id}`);
         this.getSavPalettes();
-        this.delDialog = false;
       }
     },
   },
-  created() {
+  async created() {
+    // init db
+    this.db = await openDB('colorcapturedb', 1, {
+      upgrade(db) {
+        db.createObjectStore('colors', { keyPath: 'id' });
+      },
+    });
+    // SW update
     document.addEventListener('swUpdated', () => (this.swupdate = true), {
       once: true,
     });
-    window.addEventListener('online', () => (this.offline = false));
+    // online
+    window.addEventListener('online', async () => {
+      this.offline = false;
+      let colors = await this.db.getAll('colors');
+      for (let col of colors) {
+        if (col.isDeleted) {
+          await axios.delete(`${this.serverAddress}/colors/${col.id}`);
+          await this.db.delete('colors', col.id);
+        }
+      }
+      this.getSavColors();
+    });
+    // offline
     window.addEventListener('offline', () => (this.offline = true));
+    // init GET
+    this.getSavColors();
+    // this.getSavPalettes();
   },
 };
 </script>

@@ -452,8 +452,8 @@ export default {
     },
   },
   created() {
-    this.getSavColors();
-    this.getSavPalettes();
+    // this.getSavColors();
+    // this.getSavPalettes();
   },
 };
 </script>

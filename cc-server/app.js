@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const history = require('connect-history-api-fallback');
 const path = require('path');
 const cors = require('cors');
 const colors = require('./routes/colors');
@@ -12,6 +13,7 @@ require('dotenv').config();
 
 const app = express();
 
+app.use(history());
 app.use(morgan('dev'));
 app.use(cors());
 
