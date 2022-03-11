@@ -15,6 +15,15 @@
     </v-app-bar>
 
     <v-main>
+      <v-alert
+        v-if="offline"
+        type="error"
+        dense
+        border="right"
+        colored-border
+        class="offline elevation-4"
+        >No network connection...</v-alert
+      >
       <router-view />
     </v-main>
 
@@ -55,6 +64,7 @@ export default {
   data: () => ({
     value: 'recent',
     swupdate: false,
+    offline: !navigator.onLine,
   }),
   methods: {
     update() {
@@ -66,11 +76,14 @@ export default {
     document.addEventListener('swUpdated', () => (this.swupdate = true), {
       once: true,
     });
+    window.addEventListener('online', () => (this.offline = false));
+    window.addEventListener('offline', () => (this.offline = true));
   },
 };
 </script>
 
 <style>
+/* Logo */
 .logo {
   /* height: 80%; */
   width: 60px;
@@ -82,22 +95,23 @@ export default {
 .logo img {
   height: 45%;
 }
-/* width */
+/* Offline alert */
+.offline {
+  position: fixed !important;
+  top: 2vh;
+  right: 1vh;
+  z-index: 10;
+}
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 3px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
