@@ -40,7 +40,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn rounded text @click="dialog = false"> Cancel </v-btn>
-        <v-btn rounded color="primary" @click="save"> Save </v-btn>
+        <v-btn rounded color="primary" @click="save" :loading="loading">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -58,6 +60,7 @@ export default {
     ],
     creator: '',
     comment: '',
+    loading: false,
   }),
   props: {
     image: String,
@@ -67,16 +70,17 @@ export default {
   },
   methods: {
     async save() {
-      let location = '';
-      if ('geolocation' in navigator) {
-        const { coords } = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-          });
-        });
-        location = `${coords.latitude},${coords.longitude}`;
-      } else console.log('Error, Geolocation');
       if (this.$refs.form.validate()) {
+        this.loading = true;
+        let location = '';
+        if ('geolocation' in navigator) {
+          const { coords } = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+            });
+          });
+          location = `${coords.latitude},${coords.longitude}`;
+        } else console.log('Error, Geolocation');
         let id;
         if (this.isPalette) {
           id = (
@@ -102,6 +106,7 @@ export default {
           ).data.id;
         }
         this.$router.push({ path: `/library/${id}` });
+        this.loading = false;
       }
     },
   },
