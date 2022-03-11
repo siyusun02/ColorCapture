@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const history = require('connect-history-api-fallback');
 const path = require('path');
-// const cors = require('cors');
+const cors = require('cors');
 const colors = require('./routes/colors');
 const palettes = require('./routes/palettes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(history());
 app.use(morgan('dev'));
-// app.use(cors());
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, '/client')));
 app.use(express.static(path.join(__dirname, '/public')));

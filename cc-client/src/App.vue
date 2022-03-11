@@ -1,16 +1,16 @@
 <template>
   <v-app>
     <v-app-bar
+      height="90"
       flat
-      height="100"
       app
       color="white"
       v-if="$route.name !== 'Camera'"
     >
-      <div class="text-h3 mt-5">{{ $route.name }}</div>
+      <div class="text-h4 font-weight-bold mt-5 ps-2">{{ $route.name }}</div>
       <v-spacer></v-spacer>
-      <div class="logo mt-5 elevation-4 rounded-circle">
-        <img src="./assets/logo.png" alt="Logo" />
+      <div class="logo mt-5 rounded-circle">
+        <img src="./assets/logo.svg" alt="Logo" />
       </div>
     </v-app-bar>
 

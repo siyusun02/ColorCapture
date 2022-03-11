@@ -1,6 +1,10 @@
 <template>
   <div class="pb-16">
-    <v-tabs style="position: fixed; z-index: 5" v-model="tab">
+    <v-tabs
+      style="position: fixed; z-index: 5"
+      class="px-5 white"
+      v-model="tab"
+    >
       <v-tab>Colors</v-tab>
       <v-tab>Palettes</v-tab>
     </v-tabs>
@@ -17,12 +21,15 @@
         >
           <!-- Header -->
           <template v-slot:header>
-            <v-toolbar dark class="my-3">
-              <v-text-field
+            <v-toolbar
+              class="mt-7 mx-4 elevation-0"
+              style="border-top: 1px solid #ddd"
+            >
+              <!-- <v-text-field
                 dense
                 v-model="search"
                 clearable
-                solo-inverted
+                solo
                 hide-details
                 prepend-inner-icon="mdi-magnify"
                 label="Search"
@@ -31,9 +38,18 @@
                 <v-btn small slot="append" icon>
                   <v-icon> mdi-microphone </v-icon>
                 </v-btn>
-              </v-text-field>
+              </v-text-field> -->
               <v-spacer></v-spacer>
-              <v-select
+              <v-btn icon>
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>mdi-microphone</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>mdi-filter</v-icon>
+              </v-btn>
+              <!-- <v-select
                 v-model="sortBy"
                 solo
                 dense
@@ -46,15 +62,7 @@
               </v-select>
               <v-btn small fab text @click="sortDesc = !sortDesc">
                 <v-icon>mdi-sort-alphabetical-variant</v-icon>
-              </v-btn>
-              <!-- <v-btn-toggle v-model="sortDesc" mandatory>
-                  <v-btn large depressed :value="false">
-                    <v-icon>mdi-arrow-up</v-icon>
-                  </v-btn>
-                  <v-btn large depressed :value="true">
-                    <v-icon>mdi-arrow-down</v-icon>
-                  </v-btn>
-                </v-btn-toggle> -->
+              </v-btn> -->
             </v-toolbar>
           </template>
           <!-- Body -->
@@ -68,7 +76,7 @@
                   md="6"
                   lg="4"
                 >
-                  <v-card class="mx-auto sc-card" max-width="344">
+                  <v-card class="mx-auto sc-card" max-width="344" elevation="4">
                     <v-img
                       :src="`${serverAddress}/images/${sc.imgname}`"
                       height="200px"
