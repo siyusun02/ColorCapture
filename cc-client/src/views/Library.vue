@@ -26,33 +26,21 @@
               class="mt-7 elevation-0"
               style="border-top: 1px solid #ddd"
             >
-              <!-- <v-text-field
-                dense
+              <!-- Search -->
+              <v-text-field
+                v-if="inptoggle == 'search'"
+                ref="inp"
                 v-model="search"
                 clearable
-                solo
                 hide-details
                 prepend-inner-icon="mdi-magnify"
-                label="Search"
                 class="rounded-pill me-1"
               >
-                <v-btn small slot="append" icon>
-                  <v-icon> mdi-microphone </v-icon>
-                </v-btn>
-              </v-text-field> -->
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-microphone</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-filter</v-icon>
-              </v-btn>
-              <!-- <v-select
+              </v-text-field>
+              <!-- Sort -->
+              <v-select
+                v-if="inptoggle == 'sort'"
                 v-model="sortBy"
-                solo
                 dense
                 hide-details
                 :items="keys"
@@ -61,9 +49,29 @@
                 class="me-1"
               >
               </v-select>
-              <v-btn small fab text @click="sortDesc = !sortDesc">
+              <v-btn
+                v-if="inptoggle == 'sort'"
+                small
+                fab
+                text
+                @click="sortDesc = !sortDesc"
+              >
                 <v-icon>mdi-sort-alphabetical-variant</v-icon>
-              </v-btn> -->
+              </v-btn>
+              <!-- Toggle Btn -->
+              <v-spacer v-if="!inptoggle"></v-spacer>
+              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'search'">
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
+              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'speech'">
+                <v-icon>mdi-microphone</v-icon>
+              </v-btn>
+              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'sort'">
+                <v-icon>mdi-sort</v-icon>
+              </v-btn>
+              <v-btn icon v-if="inptoggle" @click="inptoggle = ''">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
             </v-toolbar>
           </template>
           <!-- Body -->
@@ -401,8 +409,6 @@ export default {
       sortDesc: false,
       sortBy: 'title',
       keys: ['title', 'createdate', 'creator'],
-      // savColors: [],
-      // savPalettes: [],
       delDialog: false,
       editDialog: false,
       currObj: {},
@@ -410,6 +416,8 @@ export default {
         (v) => !!v || 'Title is required',
         (v) => (v && v.length <= 20) || 'Title must be less than 20 characters',
       ],
+      // toolbar
+      inptoggle: '',
     };
   },
   methods: {
