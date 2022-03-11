@@ -349,8 +349,6 @@ export default {
   align-items: center;
 }
 .edit-main {
-  /* margin-top: -3vh;
-  height: 17vh; */
   z-index: 5;
   position: relative;
   background-color: #fff;
@@ -361,12 +359,12 @@ export default {
 }
 
 .edit-color {
-  margin-top: -3vh;
-  height: 17vh;
+  margin-top: -3.1vh;
+  min-height: 17vh;
 }
 .edit-palette {
-  margin-top: -10vh;
-  height: 24vh;
+  margin-top: -12.1vh;
+  min-height: 26vh;
 }
 
 .edit-main .color-edit {
@@ -376,12 +374,13 @@ export default {
 }
 
 .edit-footer {
-  height: 6vh;
+  min-height: 6vh;
   display: flex;
   justify-content: center;
 }
 .edit-footer button {
   width: 50%;
+  margin: 0 3px;
 }
 
 .camera .controls {
