@@ -106,16 +106,14 @@ export default {
     },
     // Update
     async editSaved(s) {
-      if (this.$refs.form.validate()) {
-        if (s.color) {
-          await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
-          this.getSavColors();
-          this.editDialog = false;
-        } else {
-          await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
-          this.getSavPalettes();
-          this.editDialog = false;
-        }
+      if (s.color) {
+        await axios.patch(`${this.serverAddress}/colors/${s.id}`, s);
+        this.getSavColors();
+        this.editDialog = false;
+      } else {
+        await axios.patch(`${this.serverAddress}/palettes/${s.id}`, s);
+        this.getSavPalettes();
+        this.editDialog = false;
       }
     },
     // Delete
