@@ -7,8 +7,7 @@
     </v-btn>
     <v-divider></v-divider>
     <blockquote class="mt-8 mb-4">
-      Do you want friendly reminder to use color capture? Turn on the
-      notifications!
+      Do you want to know, if new works are created? Turn on the notifications!
     </blockquote>
     <v-btn class="my-4" @click="subscribe" rounded color="primary">
       <v-icon class="me-3"> mdi-bell-ring</v-icon>
@@ -22,6 +21,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      synth: window.speechSynthesis,
       text: `Welcome to Color Capture. This app is for designers or anyone, who works a lot with different colors.
       You can take a picture or upload one, and then pick any color out of it. Furthermore, you can generate a
       color scheme. This is a school project 2021/22 by Si Yu Sun.`,
@@ -31,9 +31,10 @@ export default {
   },
   methods: {
     text2speech() {
+      this.synth.cancel();
       navigator.vibrate(200);
       const msg = new SpeechSynthesisUtterance(this.text);
-      window.speechSynthesis.speak(msg);
+      this.synth.speak(msg);
     },
     urlBase64ToUint8Array(base64String) {
       const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -59,6 +60,10 @@ export default {
         applicationServerKey: this.urlBase64ToUint8Array(this.publicVapidKey),
       });
       await axios.post('/subscribe', subscription);
+      this.$emit(
+        'snackbar',
+        'Congratulation! You will now get very useful notification'
+      );
     },
   },
   created() {

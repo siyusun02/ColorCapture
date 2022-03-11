@@ -28,6 +28,7 @@
         :savColors="savColors"
         :savPalettes="savPalettes"
         :offline="offline"
+        @snackbar="openSnackbar"
         @getsc="getSavColors"
         @getsp="getSavPalettes"
         @delsav="delSaved"
@@ -65,6 +66,15 @@
         <v-btn color="primary" text v-bind="attrs" @click="update"> OK </v-btn>
       </template>
     </v-snackbar>
+
+    <v-snackbar v-model="snackbar">
+      {{ snackbarmsg }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="primary" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -82,6 +92,8 @@ export default {
     savColors: [],
     savPalettes: [],
     db: undefined,
+    snackbar: false,
+    snackbarmsg: '',
   }),
   methods: {
     update() {
@@ -91,6 +103,11 @@ export default {
     // send notification
     notify(msg) {
       axios.post(`${this.serverAddress}/notify`, { message: msg });
+    },
+    // Snackbar
+    openSnackbar(msg) {
+      this.snackbarmsg = msg;
+      this.snackbar = true;
     },
     // CRUD
     // Create
