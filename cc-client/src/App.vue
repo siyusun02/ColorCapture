@@ -88,17 +88,25 @@ export default {
       this.swupdate = false;
       location.reload();
     },
+    // send notification
+    notify(msg) {
+      axios.post(`${this.serverAddress}/notify`, { message: msg });
+    },
     // CRUD
     // Create
     async addColor(nc) {
       await axios.post(`${this.serverAddress}/colors`, nc);
       this.getSavColors();
       this.$router.push({ path: `/library` });
+      this.notify('Hi, a new color was added to the library. Go check it out!');
     },
     async addPalette(np) {
       await axios.post(`${this.serverAddress}/palettes`, np);
       this.getSavPalettes();
       this.$router.push({ path: `/library` });
+      this.notify(
+        'Hi, a new palette was added to the library. Go check it out!'
+      );
     },
     // Read
     async getSavColors() {

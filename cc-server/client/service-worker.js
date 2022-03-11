@@ -1,6 +1,14 @@
-importScripts("/precache-manifest.cd02d4d11f1130b2f58173c304e473e5.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.5c610dbc5eb4478466afc8800f82f941.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 self.skipWaiting();
+
+self.addEventListener('push', (event) => {
+  const data = event.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body.message,
+    icon: 'img/icons/android-chrome-192x192.png',
+  });
+});
 
 /* global workbox */
 if (workbox) {

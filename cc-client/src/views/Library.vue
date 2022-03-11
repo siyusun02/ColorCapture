@@ -27,46 +27,49 @@
               style="border-top: 1px solid #ddd"
             >
               <!-- Search -->
-              <v-text-field
-                v-if="inptoggle == 'search'"
-                ref="inp"
-                v-model="search"
-                clearable
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                class="rounded-pill me-1"
-              >
-              </v-text-field>
+              <v-slide-x-transition>
+                <v-text-field
+                  v-if="inptoggle == 'search'"
+                  ref="inp"
+                  v-model="search"
+                  clearable
+                  hide-details
+                  prepend-inner-icon="mdi-magnify"
+                  class="rounded-pill me-1"
+                >
+                </v-text-field>
+              </v-slide-x-transition>
               <!-- Sort -->
-              <v-select
-                v-if="inptoggle == 'sort'"
-                v-model="sortBy"
-                dense
-                hide-details
-                :items="keys"
-                prepend-inner-icon="mdi-sort"
-                label="Sort by"
-                class="me-1"
-              >
-              </v-select>
-              <v-btn
-                v-if="inptoggle == 'sort'"
-                small
-                fab
-                text
-                @click="sortDesc = !sortDesc"
-              >
-                <v-icon>mdi-sort-alphabetical-variant</v-icon>
-              </v-btn>
+              <v-slide-x-transition>
+                <v-select
+                  v-model="sortBy"
+                  v-if="inptoggle == 'sort'"
+                  dense
+                  hide-details
+                  :items="keys"
+                  prepend-inner-icon="mdi-sort"
+                  label="Sort by"
+                  class="me-1"
+                >
+                </v-select>
+              </v-slide-x-transition>
+              <v-slide-x-transition>
+                <v-btn
+                  v-if="inptoggle == 'sort'"
+                  small
+                  fab
+                  text
+                  @click="sortDesc = !sortDesc"
+                >
+                  <v-icon>mdi-sort-alphabetical-variant</v-icon>
+                </v-btn>
+              </v-slide-x-transition>
               <!-- Toggle Btn -->
               <v-spacer v-if="!inptoggle"></v-spacer>
-              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'search'">
+              <v-btn v-if="!inptoggle" icon @click="inptoggle = 'search'">
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
-              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'speech'">
-                <v-icon>mdi-microphone</v-icon>
-              </v-btn>
-              <v-btn icon v-if="!inptoggle" @click="inptoggle = 'sort'">
+              <v-btn v-if="!inptoggle" icon @click="inptoggle = 'sort'">
                 <v-icon>mdi-sort</v-icon>
               </v-btn>
               <v-btn icon v-if="inptoggle" @click="inptoggle = ''">
@@ -86,6 +89,7 @@
                   lg="4"
                 >
                   <v-card class="mx-auto sc-card" max-width="344" elevation="4">
+                    <!-- Image -->
                     <v-img
                       :src="`${serverAddress}/images/${sc.imgname}`"
                       height="200px"
@@ -156,7 +160,8 @@
                             <!-- <v-icon>mdi-book-edit</v-icon> -->
                             <v-icon>mdi-pencil</v-icon>
                           </v-btn>
-                          <v-btn icon>
+                          <!-- Share -->
+                          <v-btn icon @click="share">
                             <v-icon>mdi-share-variant</v-icon>
                           </v-btn>
                         </v-card-actions>
@@ -181,44 +186,59 @@
         >
           <!-- Header -->
           <template v-slot:header>
-            <v-toolbar dark class="my-3">
-              <v-text-field
-                dense
-                v-model="search"
-                clearable
-                solo-inverted
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                class="rounded-pill me-1"
-              >
-                <v-btn small slot="append" icon>
-                  <v-icon> mdi-microphone </v-icon>
+            <v-toolbar
+              class="mt-7 elevation-0"
+              style="border-top: 1px solid #ddd"
+            >
+              <!-- Search -->
+              <v-slide-x-transition>
+                <v-text-field
+                  v-if="inptoggle == 'search'"
+                  ref="inp"
+                  v-model="search"
+                  clearable
+                  hide-details
+                  prepend-inner-icon="mdi-magnify"
+                  class="rounded-pill me-1"
+                >
+                </v-text-field>
+              </v-slide-x-transition>
+              <!-- Sort -->
+              <v-slide-x-transition>
+                <v-select
+                  v-model="sortBy"
+                  v-if="inptoggle == 'sort'"
+                  dense
+                  hide-details
+                  :items="keys"
+                  prepend-inner-icon="mdi-sort"
+                  label="Sort by"
+                  class="me-1"
+                >
+                </v-select>
+              </v-slide-x-transition>
+              <v-slide-x-transition>
+                <v-btn
+                  v-if="inptoggle == 'sort'"
+                  small
+                  fab
+                  text
+                  @click="sortDesc = !sortDesc"
+                >
+                  <v-icon>mdi-sort-alphabetical-variant</v-icon>
                 </v-btn>
-              </v-text-field>
-              <v-spacer></v-spacer>
-              <v-select
-                v-model="sortBy"
-                solo
-                dense
-                hide-details
-                :items="keys"
-                prepend-inner-icon="mdi-sort"
-                label="Sort by"
-                class="me-1"
-              >
-              </v-select>
-              <v-btn small fab text @click="sortDesc = !sortDesc">
-                <v-icon>mdi-sort-alphabetical-variant</v-icon>
+              </v-slide-x-transition>
+              <!-- Toggle Btn -->
+              <v-spacer v-if="!inptoggle"></v-spacer>
+              <v-btn v-if="!inptoggle" icon @click="inptoggle = 'search'">
+                <v-icon>mdi-magnify</v-icon>
               </v-btn>
-              <!-- <v-btn-toggle v-model="sortDesc" mandatory>
-                  <v-btn large depressed :value="false">
-                    <v-icon>mdi-arrow-up</v-icon>
-                  </v-btn>
-                  <v-btn large depressed :value="true">
-                    <v-icon>mdi-arrow-down</v-icon>
-                  </v-btn>
-                </v-btn-toggle> -->
+              <v-btn v-if="!inptoggle" icon @click="inptoggle = 'sort'">
+                <v-icon>mdi-sort</v-icon>
+              </v-btn>
+              <v-btn icon v-if="inptoggle" @click="inptoggle = ''">
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
             </v-toolbar>
           </template>
           <!-- Body -->
@@ -233,16 +253,20 @@
                   lg="4"
                 >
                   <v-card class="mx-auto sc-card" max-width="344">
+                    <!-- Image -->
                     <v-img
                       :src="`${serverAddress}/images/${sp.imgname}`"
                       height="200px"
                     />
+                    <!-- Title -->
                     <v-card-title>
                       {{ sp.title || 'Untitled Work' }}
                     </v-card-title>
+                    <!-- Creator -->
                     <v-card-subtitle>
                       by {{ sp.creator || 'Unknown Creator' }}
                     </v-card-subtitle>
+                    <!-- Palette -->
                     <v-card-text>
                       <v-row
                         no-gutters
@@ -274,6 +298,7 @@
                     <v-expand-transition>
                       <div v-show="sp.show">
                         <v-divider></v-divider>
+                        <!-- Palette colors -->
                         <v-card-text>
                           <v-list>
                             <v-list-item v-for="col in sp.palette" :key="col">
@@ -286,12 +311,19 @@
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text>
+                          <!-- Comment -->
                           <blockquote class="font-italic">
                             {{ sp.comment }}
                           </blockquote>
+                          <!-- Date -->
                           <v-chip class="my-5">
                             <v-icon left> mdi-calendar </v-icon>
                             {{ new Date(sp.createdate).toDateString() }}
+                          </v-chip>
+                          <!-- Location -->
+                          <v-chip @click="openMap(sp.location)">
+                            <v-icon left> mdi-map-marker </v-icon>
+                            {{ sp.location || '--,--' }}
                           </v-chip>
                         </v-card-text>
                         <v-divider></v-divider>
@@ -318,7 +350,8 @@
                             <!-- <v-icon>mdi-book-edit</v-icon> -->
                             <v-icon>mdi-pencil</v-icon>
                           </v-btn>
-                          <v-btn icon>
+                          <!-- Share -->
+                          <v-btn icon @click="share">
                             <v-icon>mdi-share-variant</v-icon>
                           </v-btn>
                         </v-card-actions>
@@ -457,6 +490,21 @@ export default {
         window.open(
           `https://maps.google.com/maps/?q=${coords[0]},${coords[1]}`
         );
+    },
+    // Share
+    share() {
+      if (!('share' in navigator)) {
+        alert('Web Share API not supported.');
+        return;
+      }
+      navigator
+        .share({
+          title: 'Color Capture',
+          text: `Look at the work I made with Color Capture!`,
+          url: 'https://colorcapture.herokuapp.com/library/',
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing:', error));
     },
   },
 };

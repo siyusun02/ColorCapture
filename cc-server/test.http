@@ -46,3 +46,10 @@ Content-Type: application/json
   "creator": "Si Yu Sun",
   "title": "Test 2"
 }
+### notify
+POST http://localhost:3000/notify
+Content-Type: application/json
+
+{
+  "message": "Hello, you are notified via push"
+}
