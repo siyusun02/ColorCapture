@@ -69,7 +69,6 @@ export default {
   methods: {
     async save() {
       if (this.$refs.form.validate()) {
-        // this.loading = true;
         let location = '';
         if ('geolocation' in navigator) {
           const { coords } = await new Promise((resolve, reject) => {
@@ -79,7 +78,6 @@ export default {
           });
           location = `${coords.latitude},${coords.longitude}`;
         } else console.log('Error, Geolocation');
-        // let id;
         let n;
         if (this.isPalette) {
           n = {
@@ -101,8 +99,6 @@ export default {
           };
         }
         this.$emit('add', n);
-        // this.$router.push({ path: `/library/${id}` });
-        // this.loading = false;
       }
     },
   },

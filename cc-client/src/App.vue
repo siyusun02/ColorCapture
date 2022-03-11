@@ -92,9 +92,8 @@ export default {
       this.$router.push({ path: `/library` });
     },
     async addPalette(np) {
-      const { id } = (await axios.post(`${this.serverAddress}/palettes`, np))
-        .data;
-      this.$router.push({ path: `/library/${id}` });
+      await axios.post(`${this.serverAddress}/palettes`, np);
+      this.$router.push({ path: `/library` });
     },
     // Read
     async getSavColors() {
