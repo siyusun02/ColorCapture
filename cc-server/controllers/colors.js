@@ -17,9 +17,8 @@ module.exports = {
     const base64 = req.body.image.replace(/^data:image\/png;base64,/, '');
     const binaryData = Buffer.from(base64, 'base64').toString('binary');
     const imgname = `${uuidv4()}.png`;
-    const imgpath = path.join(__dirname, `../public/images/${imgname}`);
+    const imgpath = path.join(__dirname, `../client/images/${imgname}`);
     fs.writeFileSync(imgpath, binaryData, 'binary');
-    // data.title, data.color, data.creator, data.comment, data.imgsrc;
     const row = await colors.addColor({
       ...req.body,
       imgname,
@@ -29,7 +28,7 @@ module.exports = {
   delColor: asyncHandler(async (req, res) => {
     const row = await colors.delColor(req.params.id);
     if (row) {
-      const imgpath = path.join(__dirname, `../public/images/${row.imgname}`);
+      const imgpath = path.join(__dirname, `../client/images/${row.imgname}`);
       fs.unlinkSync(imgpath);
       res.status(200).end();
     } else res.status(404).send('ID not found');

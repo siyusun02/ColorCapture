@@ -18,7 +18,7 @@ SET row_security = off;
 
 SET default_tablespace = '';
 
--- SET default_table_access_method = heap;
+SET default_table_access_method = heap;
 
 --
 -- Name: colors; Type: TABLE; Schema: public; Owner: postgres
@@ -31,7 +31,7 @@ CREATE TABLE public.colors (
 );
 
 
--- ALTER TABLE public.colors OWNER TO postgres;
+ALTER TABLE public.colors OWNER TO postgres;
 
 --
 -- Name: colors_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -46,7 +46,7 @@ CREATE SEQUENCE public.colors_id_seq
     CACHE 1;
 
 
--- ALTER TABLE public.colors_id_seq OWNER TO postgres;
+ALTER TABLE public.colors_id_seq OWNER TO postgres;
 
 --
 -- Name: colors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -71,7 +71,7 @@ CREATE TABLE public.savcolors (
 );
 
 
--- ALTER TABLE public.savcolors OWNER TO postgres;
+ALTER TABLE public.savcolors OWNER TO postgres;
 
 --
 -- Name: savcolors_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -86,7 +86,7 @@ CREATE SEQUENCE public.savcolors_id_seq
     CACHE 1;
 
 
--- ALTER TABLE public.savcolors_id_seq OWNER TO postgres;
+ALTER TABLE public.savcolors_id_seq OWNER TO postgres;
 
 --
 -- Name: savcolors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -110,7 +110,7 @@ CREATE TABLE public.savpalettes (
 );
 
 
--- ALTER TABLE public.savpalettes OWNER TO postgres;
+ALTER TABLE public.savpalettes OWNER TO postgres;
 
 --
 -- Name: savpalettes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -125,7 +125,7 @@ CREATE SEQUENCE public.savpalettes_id_seq
     CACHE 1;
 
 
--- ALTER TABLE public.savpalettes_id_seq OWNER TO postgres;
+ALTER TABLE public.savpalettes_id_seq OWNER TO postgres;
 
 --
 -- Name: savpalettes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -159,18 +159,24 @@ ALTER TABLE ONLY public.savpalettes ALTER COLUMN id SET DEFAULT nextval('public.
 -- Data for Name: colors; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+COPY public.colors (id, color, palette) FROM stdin;
+\.
 
 
 --
 -- Data for Name: savcolors; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+COPY public.savcolors (id, title, color, creator, comment, createdate, imgname, location) FROM stdin;
+\.
 
 
 --
 -- Data for Name: savpalettes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+COPY public.savpalettes (id, title, creator, comment, createdate, imgname, location) FROM stdin;
+\.
 
 
 --
