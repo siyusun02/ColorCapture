@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: colors; Type: TABLE; Schema: public; Owner: postgres
+-- Name: colors; Type: TABLE; Schema: public; Owner: cc_app
 --
 
 CREATE TABLE public.colors (
@@ -31,10 +31,10 @@ CREATE TABLE public.colors (
 );
 
 
-ALTER TABLE public.colors OWNER TO postgres;
+ALTER TABLE public.colors OWNER TO cc_app;
 
 --
--- Name: colors_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: colors_id_seq; Type: SEQUENCE; Schema: public; Owner: cc_app
 --
 
 CREATE SEQUENCE public.colors_id_seq
@@ -46,17 +46,17 @@ CREATE SEQUENCE public.colors_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.colors_id_seq OWNER TO postgres;
+ALTER TABLE public.colors_id_seq OWNER TO cc_app;
 
 --
--- Name: colors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: colors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cc_app
 --
 
 ALTER SEQUENCE public.colors_id_seq OWNED BY public.colors.id;
 
 
 --
--- Name: savcolors; Type: TABLE; Schema: public; Owner: postgres
+-- Name: savcolors; Type: TABLE; Schema: public; Owner: cc_app
 --
 
 CREATE TABLE public.savcolors (
@@ -71,10 +71,10 @@ CREATE TABLE public.savcolors (
 );
 
 
-ALTER TABLE public.savcolors OWNER TO postgres;
+ALTER TABLE public.savcolors OWNER TO cc_app;
 
 --
--- Name: savcolors_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: savcolors_id_seq; Type: SEQUENCE; Schema: public; Owner: cc_app
 --
 
 CREATE SEQUENCE public.savcolors_id_seq
@@ -86,17 +86,17 @@ CREATE SEQUENCE public.savcolors_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.savcolors_id_seq OWNER TO postgres;
+ALTER TABLE public.savcolors_id_seq OWNER TO cc_app;
 
 --
--- Name: savcolors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: savcolors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cc_app
 --
 
 ALTER SEQUENCE public.savcolors_id_seq OWNED BY public.savcolors.id;
 
 
 --
--- Name: savpalettes; Type: TABLE; Schema: public; Owner: postgres
+-- Name: savpalettes; Type: TABLE; Schema: public; Owner: cc_app
 --
 
 CREATE TABLE public.savpalettes (
@@ -110,10 +110,10 @@ CREATE TABLE public.savpalettes (
 );
 
 
-ALTER TABLE public.savpalettes OWNER TO postgres;
+ALTER TABLE public.savpalettes OWNER TO cc_app;
 
 --
--- Name: savpalettes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: savpalettes_id_seq; Type: SEQUENCE; Schema: public; Owner: cc_app
 --
 
 CREATE SEQUENCE public.savpalettes_id_seq
@@ -125,38 +125,38 @@ CREATE SEQUENCE public.savpalettes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.savpalettes_id_seq OWNER TO postgres;
+ALTER TABLE public.savpalettes_id_seq OWNER TO cc_app;
 
 --
--- Name: savpalettes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: savpalettes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cc_app
 --
 
 ALTER SEQUENCE public.savpalettes_id_seq OWNED BY public.savpalettes.id;
 
 
 --
--- Name: colors id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: colors id; Type: DEFAULT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.colors ALTER COLUMN id SET DEFAULT nextval('public.colors_id_seq'::regclass);
 
 
 --
--- Name: savcolors id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: savcolors id; Type: DEFAULT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.savcolors ALTER COLUMN id SET DEFAULT nextval('public.savcolors_id_seq'::regclass);
 
 
 --
--- Name: savpalettes id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: savpalettes id; Type: DEFAULT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.savpalettes ALTER COLUMN id SET DEFAULT nextval('public.savpalettes_id_seq'::regclass);
 
 
 --
--- Data for Name: colors; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: colors; Type: TABLE DATA; Schema: public; Owner: cc_app
 --
 
 COPY public.colors (id, color, palette) FROM stdin;
@@ -164,7 +164,7 @@ COPY public.colors (id, color, palette) FROM stdin;
 
 
 --
--- Data for Name: savcolors; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: savcolors; Type: TABLE DATA; Schema: public; Owner: cc_app
 --
 
 COPY public.savcolors (id, title, color, creator, comment, createdate, imgname, location) FROM stdin;
@@ -172,7 +172,7 @@ COPY public.savcolors (id, title, color, creator, comment, createdate, imgname, 
 
 
 --
--- Data for Name: savpalettes; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: savpalettes; Type: TABLE DATA; Schema: public; Owner: cc_app
 --
 
 COPY public.savpalettes (id, title, creator, comment, createdate, imgname, location) FROM stdin;
@@ -180,28 +180,28 @@ COPY public.savpalettes (id, title, creator, comment, createdate, imgname, locat
 
 
 --
--- Name: colors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: colors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cc_app
 --
 
 SELECT pg_catalog.setval('public.colors_id_seq', 30, true);
 
 
 --
--- Name: savcolors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: savcolors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cc_app
 --
 
 SELECT pg_catalog.setval('public.savcolors_id_seq', 52, true);
 
 
 --
--- Name: savpalettes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: savpalettes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cc_app
 --
 
 SELECT pg_catalog.setval('public.savpalettes_id_seq', 6, true);
 
 
 --
--- Name: colors colors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: colors colors_pkey; Type: CONSTRAINT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.colors
@@ -209,7 +209,7 @@ ALTER TABLE ONLY public.colors
 
 
 --
--- Name: savcolors savcolors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: savcolors savcolors_pkey; Type: CONSTRAINT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.savcolors
@@ -217,7 +217,7 @@ ALTER TABLE ONLY public.savcolors
 
 
 --
--- Name: savpalettes savpalettes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: savpalettes savpalettes_pkey; Type: CONSTRAINT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.savpalettes
@@ -225,7 +225,7 @@ ALTER TABLE ONLY public.savpalettes
 
 
 --
--- Name: colors fk_palette_color; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: colors fk_palette_color; Type: FK CONSTRAINT; Schema: public; Owner: cc_app
 --
 
 ALTER TABLE ONLY public.colors

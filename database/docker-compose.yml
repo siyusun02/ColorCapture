@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: color-capture:latest
+    container_name: color_capture_container
+    build: .
+    ports:
+      - "5432:5432"
+    volumes:
+      - color_capture_pgdata:/var/lib/postgresql/data
+
+volumes:
+  color_capture_pgdata:
