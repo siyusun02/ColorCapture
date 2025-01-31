@@ -10,7 +10,7 @@ ColorCapture is a Progressive Web App (PWA) that allows users to capture or uplo
 ## Screenshots
 TODO structure better
 <div>
-   <img src="https://github.com/siyusun02/ColorCapture/blob/main/screenshots/color-create.png.png?raw=true" width="20%" />
+   <img src="https://github.com/siyusun02/ColorCapture/blob/main/screenshots/color-create.png?raw=true" width="20%" />
    <img src="https://github.com/siyusun02/ColorCapture/blob/main/screenshots/color-lib.png?raw=true" width="20%" />
    <img src="https://github.com/siyusun02/ColorCapture/blob/main/screenshots/palette-create.png?raw=true" width="20%" />
    <img src="https://github.com/siyusun02/ColorCapture/blob/main/screenshots/palette-lib-details.png?raw=true" width="20%" />
