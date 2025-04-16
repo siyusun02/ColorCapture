@@ -9,7 +9,7 @@ const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 const subscriptions = [];
 
 webpush.setVapidDetails(
-  'mailto:sun.s02@htlwienwest.at',
+  'mailto:max@muster.at',
   publicVapidKey,
   privateVapidKey
 );

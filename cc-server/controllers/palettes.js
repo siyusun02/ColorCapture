@@ -12,7 +12,13 @@ module.exports = {
     const base64 = req.body.image.replace(/^data:image\/png;base64,/, '');
     const binaryData = Buffer.from(base64, 'base64').toString('binary');
     const imgname = `${uuidv4()}.png`;
-    const imgpath = path.join(__dirname, `../client/images/${imgname}`);
+    const dir = path.join(__dirname, '../client/images/');
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+
+    const imgpath = path.join(dir, imgname);
+
     fs.writeFileSync(imgpath, binaryData, 'binary');
     const id = await palettes.addPalette({
       ...req.body,
