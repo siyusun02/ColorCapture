@@ -8,7 +8,6 @@ ColorCapture is a Progressive Web App (PWA) that allows users to capture or uplo
 * Adjust and fine-tune generated colors and palettes
 
 ## Screenshots
-TODO structure better
 <div>
    <img alt="create new color" src="./screenshots/color-create.png" width="20%" />
    <img alt="color library" src="./screenshots/color-lib.png" width="20%" />
@@ -22,41 +21,10 @@ TODO structure better
 * Backend, Node JS & Express, PostgreSQL
 
 ## How to run
-### Database
+use docker
 ```
-cd ./database
+docker compose up
 ```
-
-Start
-```
-docker-compose up --build -d
-```
-
-Stop
-```
-docker-compose down -v
-```
-
-### Server
-
-```
-cd ./cc-server
-```
-
-Dependencies
-
-```
-npm i
-```
-
-Run
-
-```
-npm start
-```
-
-### Frontend
-build TBD
 
 ## Background
 This project was developed as part of a school assignment during the 2021/2022 academic year. The primary goal was to explore Progressive Web Apps (PWA) and experiment with various technologies.

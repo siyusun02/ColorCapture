@@ -2,13 +2,26 @@ version: '3.8'
 
 services:
   db:
-    image: color-capture:latest
+    image: color-capture-db:latest
     container_name: color_capture_database
-    build: database
+    build:
+      context: ./database
     ports:
       - "5432:5432"
     volumes:
       - color_capture_pgdata:/var/lib/postgresql/data
+
+  server:
+    image: color-capture-server:latest
+    container_name: color_capture_server
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DB_CONN_STRING: postgres://cc_app:secret-for-development@db:5432/color-capture-db
 
 volumes:
   color_capture_pgdata:
