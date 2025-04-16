@@ -1,6 +1,5 @@
 const express = require('express');
 const webpush = require('web-push');
-require('@dotenvx/dotenvx').config();
 
 const router = express.Router();
 

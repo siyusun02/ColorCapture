@@ -10,7 +10,6 @@ const palettes = require('./routes/palettes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 require('colors');
-require('@dotenvx/dotenvx').config();
 
 const app = express();
 

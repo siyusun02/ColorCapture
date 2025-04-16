@@ -1,7 +1,5 @@
 const { Pool } = require('pg');
 
-require('@dotenvx/dotenvx').config();
-
 const pool = new Pool({
   connectionString: process.env.DB_CONN_STRING,
 });
