@@ -3,8 +3,8 @@
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, _req, res, _next) => {
-  console.log(`Error: ${err}`.bgRed);
-  res.status(500).send(err.message);
+  console.log(`Error:`.bgRed, err);
+  res.status(500).end();
 };
 
 const notFound = (req, res) => {

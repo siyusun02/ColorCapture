@@ -10,7 +10,7 @@ const palettes = require('./routes/palettes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 require('colors');
-require('dotenv').config();
+require('@dotenvx/dotenvx').config();
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use('/palettes', palettes);
 
 app.use(errorHandler);
 app.use(notFound);
-const PORT = process.env.PORT ?? 5000;
+const PORT = process.env.PORT ?? 3000;
 
 console.log(`Server listens on port: ${PORT}`.blue.bold);
 app.listen(PORT);
